@@ -3374,7 +3374,6 @@ function animateLanding() {
     if (animatedSections.has('landing')) return;
     animatedSections.add('landing');
     
-    // Fade in logo and eagle
     const logoText = document.querySelector('#landing .logo-text');
     const eagle = document.querySelector('#landing .eagle');
     
@@ -3385,7 +3384,6 @@ function animateLanding() {
         if (eagle) eagle.classList.add('animated');
     }, 400);
     
-    // Type in text elements
     document.querySelectorAll('#landing .type').forEach((el, i) => {
         setTimeout(() => typeText(el), i * 140);
     });
@@ -3396,7 +3394,6 @@ function animateSolutions() {
     if (animatedSections.has('second')) return;
     animatedSections.add('second');
     
-    // Type in brand and mission
     const brand = document.querySelector('#second .brand.type-animation');
     const mission = document.querySelector('#second .mission.type-animation');
     const footer = document.querySelector('#second .second-footer.fade-in');
@@ -3407,7 +3404,6 @@ function animateSolutions() {
         });
     }
     
-    // Fade in flag and grid
     const flag = document.querySelector('#second .flag.fade-in');
     const grid = document.querySelector('#second .second-grid.fade-in');
     
@@ -3417,8 +3413,6 @@ function animateSolutions() {
     setTimeout(() => {
         if (grid) grid.classList.add('animated');
     }, 500);
-    
-    // Fade in footer
     setTimeout(() => {
         if (footer) footer.classList.add('animated');
     }, 800);
@@ -3429,11 +3423,9 @@ function animateTeam() {
     if (animatedSections.has('team')) return;
     animatedSections.add('team');
     
-    // Type in title
     const title = document.querySelector('#team .team-title.type-animation');
     if (title) typeText(title, 50);
     
-    // Fade in elements
     const eagle = document.querySelector('#team .eagle.fade-in');
     const content = document.querySelector('#team .team-content.fade-in');
     const members = document.querySelector('#team .team-members.fade-in');
@@ -3454,29 +3446,24 @@ function animateNews() {
     if (animatedSections.has('news')) return;
     animatedSections.add('news');
     
-    // Type in title
     const title = document.querySelector('#news .news-title.type-animation');
     if (title) typeText(title, 30);
     
-    // Fade in eagle
     const eagle = document.querySelector('#news .eagle-black.fade-in');
     setTimeout(() => {
         if (eagle) eagle.classList.add('animated');
     }, 200);
     
-    // Animate the line
     const line = document.querySelector('#news .news-line');
     setTimeout(() => {
         if (line) line.classList.add('animated');
     }, 300);
     
-    // Fade in the scroll container
     const scrollContainer = document.querySelector('#news .cards-scroll-container');
     setTimeout(() => {
         if (scrollContainer) scrollContainer.classList.add('animated');
     }, 500);
     
-    // Animate individual cards with stagger
     const cards = document.querySelectorAll('#news .article-card');
     cards.forEach((card, index) => {
         setTimeout(() => {
@@ -3484,13 +3471,11 @@ function animateNews() {
         }, 600 + (index * 100));
     });
     
-    // Show scroll track
     const scrollTrackContainer = document.querySelector('#news .scroll-track-container');
     setTimeout(() => {
         if (scrollTrackContainer) scrollTrackContainer.classList.add('visible');
     }, 900);
     
-    // Fade in button
     const btn = document.querySelector('#news .our-articles-btn');
     setTimeout(() => {
         if (btn) btn.classList.add('animated');
@@ -3520,12 +3505,10 @@ const sectionObserver = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.3 });
 
-// Observe all sections
 document.querySelectorAll('section').forEach(section => {
     sectionObserver.observe(section);
 });
 
-// Trigger landing animation immediately
 animateLanding();
 
 /* ---------- Tile Hover Subtitle Typing ---------- */
@@ -3844,18 +3827,23 @@ const totalTeamPages = 6;
 let currentMemberIndex = 0;
 let allMembers = [];
 
+/* Mobile-only: members from page 0 only */
+let mobileMembers = [];
+let mobileMemberCount = 0;
+
 function initMobileTeam() {
     allMembers = document.querySelectorAll('.team-member');
     
+    /* Grab only the members inside data-page="0" for mobile carousel */
+    const page0 = document.querySelector('.team-page[data-page="0"]');
+    mobileMembers = page0 ? page0.querySelectorAll('.team-member') : [];
+    mobileMemberCount = mobileMembers.length; // should be 5
+    
     if (window.innerWidth <= 768) {
-        // On mobile, show Paul Lwin (1st member, index 0) first
-        allMembers.forEach((member, index) => {
-            member.classList.remove('mobile-active');
-            if (index === 0) member.classList.add('mobile-active');
-        });
+        // Start with Paul Lwin (index 0)
         currentMemberIndex = 0;
         
-        // Ensure we're on page 0 and positioned at first member
+        // Ensure page 0 is active and at position 0
         const pages = document.querySelectorAll('.team-page');
         pages.forEach((page, index) => {
             if (index === 0) {
@@ -3866,10 +3854,7 @@ function initMobileTeam() {
             }
         });
     } else {
-        // On desktop/tablet, remove mobile-active class and reset transforms
-        allMembers.forEach(member => {
-            member.classList.remove('mobile-active');
-        });
+        // On desktop/tablet, reset transforms
         document.querySelectorAll('.team-page').forEach(page => {
             page.style.transform = '';
         });
@@ -3878,19 +3863,19 @@ function initMobileTeam() {
 
 function switchTeamPage(direction) {
     if (window.innerWidth <= 768) {
-        // Mobile: scroll through all members one by one using translateX
-        const totalMembers = allMembers.length;
+        // Mobile: cycle through the 5 members on page 0, one at a time
+        if (mobileMemberCount === 0) return;
         
-        // Calculate new index (wrap around all members)
         currentMemberIndex += direction;
-        if (currentMemberIndex < 0) currentMemberIndex = totalMembers - 1;
-        if (currentMemberIndex >= totalMembers) currentMemberIndex = 0;
         
-        // Slide the active page using transform
-        const activePage = document.querySelector('.team-page.active');
-        if (activePage) {
-            const offset = -(currentMemberIndex * 100);
-            activePage.style.transform = 'translateX(' + offset + 'vw)';
+        // Wrap around
+        if (currentMemberIndex < 0) currentMemberIndex = mobileMemberCount - 1;
+        if (currentMemberIndex >= mobileMemberCount) currentMemberIndex = 0;
+        
+        // Slide page 0 using transform
+        const page0 = document.querySelector('.team-page[data-page="0"]');
+        if (page0) {
+            page0.style.transform = 'translateX(' + -(currentMemberIndex * 100) + 'vw)';
         }
     } else if (window.innerWidth <= 1350) {
         // Tablet: use pages 2-5
@@ -3937,16 +3922,14 @@ function switchTeamPage(direction) {
 function handleResize() {
     initMobileTeam();
     
-    // Reset to appropriate first page based on screen size
     const pages = document.querySelectorAll('.team-page');
     
     if (window.innerWidth <= 768) {
-        // Mobile - ensure page 0 is active and positioned at current member
+        // Mobile — ensure page 0 is active, positioned at current member
         pages.forEach((page, index) => {
             if (index === 0) {
                 page.classList.add('active');
-                const offset = -(currentMemberIndex * 100);
-                page.style.transform = 'translateX(' + offset + 'vw)';
+                page.style.transform = 'translateX(' + -(currentMemberIndex * 100) + 'vw)';
             } else {
                 page.classList.remove('active');
             }
@@ -4108,7 +4091,8 @@ function checkOverflow() {
 }
 
 window.addEventListener('resize', checkOverflow);
-setInterval(checkOverflow, 500); // Check every 500ms
+setInterval(checkOverflow, 500);
+
 /* ---------- Wireframe Switching on Feature Click ---------- */
 function switchWireframe(featureEl) {
     const wireframeSrc = featureEl.dataset.wireframe;
@@ -4120,13 +4104,11 @@ function switchWireframe(featureEl) {
     const wireframeImg = overlay.querySelector('.detail-wireframe img');
     if (!wireframeImg) return;
     
-    // Remove active from siblings, add to clicked
     overlay.querySelectorAll('.detail-feature[data-wireframe]').forEach(f => {
         f.classList.remove('active');
     });
     featureEl.classList.add('active');
     
-    // Fade out, swap, fade in
     wireframeImg.style.opacity = '0';
     setTimeout(() => {
         wireframeImg.src = wireframeSrc;
