@@ -1,0 +1,12 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dozer blade -->
+  <path d="M8 28L12 16H36L40 28" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Chassis -->
+  <line x1="6" y1="28" x2="42" y2="28" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Track left -->
+  <rect x="8" y="31" width="12" height="6" rx="3" stroke="white" stroke-width="2" fill="none"/>
+  <!-- Track right -->
+  <rect x="28" y="31" width="12" height="6" rx="3" stroke="white" stroke-width="2" fill="none"/>
+  <!-- Cab -->
+  <rect x="18" y="18" width="8" height="10" rx="1" stroke="white" stroke-width="2" fill="none"/>
+</svg>

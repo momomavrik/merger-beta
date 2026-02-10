@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MAVRIK</title>
+<title>HAVOC AI - PROVIDING AUTONOMY SOLUTIONS TO ANY MISSION</title>
 
 <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet">
 <style>
@@ -19,12 +19,28 @@ html {
     overflow-y: scroll;
     scroll-behavior: smooth;
     overscroll-behavior: none;
+    background: #212121;
+    -webkit-overflow-scrolling: touch;
 }
 
 body {
+    background: #212121;
     font-family: 'Clash Display', Arial, Helvetica, sans-serif;
     color: white;
     overscroll-behavior: none;
+}
+
+/* ---------- HIDE SCROLLBARS GLOBALLY ---------- */
+* {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+    width: 0;
+    height: 0;
+    background: transparent;
 }
 
 /* ---------- GLOBAL ---------- */
@@ -33,6 +49,42 @@ section {
     width: 100%;
     scroll-snap-align: start;
     position: relative;
+}
+
+/* ---------- CLICKABLE FEATURE WIREFRAME SWITCHING ---------- */
+.detail-feature[data-wireframe] {
+    cursor: pointer;
+    padding: 8px;
+    margin: -8px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.detail-feature[data-wireframe]:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.detail-feature[data-wireframe].active {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.detail-feature[data-wireframe].active .feature-title {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.detail-wireframe img {
+    transition: opacity 0.4s ease;
+}
+
+/* ---------- ARROW TEXT STYLING (prevent emoji) ---------- */
+.arrow-icon {
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ---------- LANDING ---------- */
@@ -49,6 +101,17 @@ section {
     height: 100%;
     object-fit: cover;
     z-index: 0;
+    /* Performance optimizations for iOS */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: auto;
+}
+
+@keyframes scrollBounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50% { transform: rotate(45deg) translateY(4px); }
 }
 
 .bg-overlay {
@@ -94,7 +157,7 @@ section {
     left: 0;
     right: 0;
     height: 100%;
-    background: #212121;
+    background: #244355;
     display: flex;
     align-items: center;
     padding-left: 32px;
@@ -262,7 +325,7 @@ section {
 
 /* ---------- SECOND SECTION ---------- */
 #second {
-    background: #f1f1ec;
+    background: #F6F0EE;
     color: #000;
     padding: 48px;
     display: flex;
@@ -303,6 +366,20 @@ section {
     line-height: 1.35;
     font-weight: 500;
     min-height: 54px;
+}
+
+.locations-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 40px;
+    margin-bottom: 16px;
+}
+
+.location-item {
+    font-size: 15px;
+    opacity: 0.7;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
 }
 
 .flag {
@@ -358,9 +435,9 @@ section {
     transform: scale(1.08);
 }
 
-.tile.hatchet::before { background-image: url("hatchet.png"); }
-.tile.dart::before { background-image: url("dart.png"); }
-.tile.chorus::before { background-image: url("chorus.png"); }
+.tile.hatchet::before { background-image: url("sea.png"); }
+.tile.dart::before { background-image: url("hatchet.png"); }
+.tile.chorus::before { background-image: url("land.png"); }
 .tile.teaming::before { background-image: url("teaming.png"); }
 
 .label-group {
@@ -373,6 +450,18 @@ section {
 
 .tile:hover .label-group {
     transform: translateY(-8px);
+}
+
+.tile-logo {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    z-index: 3;
+    opacity: 0.75;
+    pointer-events: none;
 }
 
 .label-group.center {
@@ -454,78 +543,840 @@ body.scroll-locked {
     overscroll-behavior: none;
 }
 
+/* Hide logo text during tablet transition */
+@media (max-width: 850px) and (min-width: 769px) {
+    .right-copy {
+        display: none;
+    }
+}
+
+/* ---------- TABLET / MEDIUM SCREENS ---------- */
+@media (max-width: 1350px) and (min-width: 769px) {
+    /* Hide desktop pages */
+    .team-page[data-page="0"],
+    .team-page[data-page="1"] {
+        display: none !important;
+    }
+    
+    /* Show tablet pages with proper styling */
+    .team-page[data-page="2"],
+    .team-page[data-page="3"],
+    .team-page[data-page="4"],
+    .team-page[data-page="5"] {
+        gap: 32px;
+    }
+    
+    .team-page[data-page="2"].active,
+    .team-page[data-page="3"].active,
+    .team-page[data-page="4"].active,
+    .team-page[data-page="5"].active {
+        display: flex !important;
+    }
+        /* Hide stats image on tablet */
+    .detail-stats {
+        display: none !important;
+    }
+    
+    /* Hide subtitle text on tablet */
+    .detail-subtitle {
+        display: none !important;
+    }
+    
+    /* Adjust header spacing without subtitle */
+    .detail-header {
+        margin-bottom: 12px;
+    }
+    
+    /* Make detail-features scrollable with indicator */
+    .detail-features {
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .detail-features::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+    
+    .detail-features::after {
+        content: '';
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        width: 14px;
+        height: 14px;
+        border-right: 2px solid rgba(0, 0, 0, 0.5);
+        border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+        transform: rotate(45deg);
+        animation: scrollBounce 1.5s ease-in-out infinite;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+        opacity: 0;
+    }
+
+    .detail-features.has-overflow::after {
+        opacity: 1;
+    }
+
+    .detail-features.scrolled::after {
+        opacity: 0;
+    }
+}
+
 /* ---------- MOBILE ---------- */
 @media (max-width: 768px) {
+    
+    /* ===== LANDING PAGE ===== */
+    html {
+        scroll-snap-type: none !important;
+    }
+
+
+    section {
+        scroll-snap-align: none !important;
+    }
+    .navbar {
+        height: 70px;
+    }
+
+    .tile-logo {
+        width: 24px;
+        height: 24px;
+        top: 8px;
+        right: 8px;
+    }
+    
+    .navbar-bg {
+        background: #212121;
+        justify-content: center;
+        padding: 0;
+        height: 70px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .navbar-bg .nav-link {
+        display: none;
+    }
+    
+    #landing .eagle {
+        position: absolute;
+        top: 35px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        right: auto;
+        width: 36px;
+        z-index: 5;
+    }
+    
+    /* Hide right copy text */
+    .right-copy {
+        display: none;
+    }
+    
+    /* Hide bottom center text (INTRODUCTION) */
+    .bottom-center {
+        display: none;
+    }
+    
+    /* Adjust logo and bottom row */
     .logo-text {
         left: 20px;
-        bottom: 120px;
-        width: 75vw;
+        bottom: 100px;
+        width: 85vw;
     }
-
-    .right-copy {
-        right: 20px;
-        bottom: 120px;
-        height: clamp(80px, 18vw, 140px);
-    }
-
-    .headline-line {
-        font-size: 14px;
-    }
-
-    .small-line {
-        font-size: 8px;
-    }
-
-    .small-group {
-        gap: 24px;
-    }
-
+    
     .bottom-row {
         left: 20px;
         right: 20px;
-        bottom: 20px;
+        bottom: 40px;
+        grid-template-columns: 1fr auto;
     }
-
+    
     .bottom-left-text,
-    .bottom-center,
     .bottom-right {
         font-size: 9px;
     }
-
+    
+    /* ===== SOLUTIONS PAGE (SECOND) - FIXED ===== */
+    
     #second {
-        padding: 24px;
+        padding: 16px 16px 12px;
+        height: 100vh;
+        max-height: 100vh;
+        gap: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
-
+    
+    .second-header {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 12px;
+        flex-shrink: 0;
+        height: auto;
+        max-height: 80px;
+    }
+    
+    .second-title {
+        gap: 12px;
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .second-title::before {
+        min-height: 60px;
+        height: 60px;
+        width: 2px;
+        flex-shrink: 0;
+    }
+    
+    .second-title-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow: hidden;
+    }
+    
+    .second-title-text .brand {
+        font-size: 14px;
+        margin-bottom: 6px;
+        min-height: auto;
+        letter-spacing: 0.1em;
+    }
+    
+    .second-title-text .mission {
+        font-size: 12px;
+        max-width: 100%;
+        min-height: auto;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .flag {
+        width: 28px;
+        flex-shrink: 0;
+        align-self: flex-start;
+    }
+    
     .second-grid {
         grid-template-columns: 1fr;
-        grid-template-rows: repeat(4, 220px);
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        gap: 10px;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+    
+    .tile {
+        min-height: 0;
+        height: 100%;
+    }
+    
+    .label {
+        font-size: 12px;
+    }
+    
+    .label-group {
+        bottom: 10px;
+        left: 10px;
+    }
+    
+    .label-group.center {
+        bottom: auto;
+        left: 50%;
+        top: 50%;
+    }
+    
+    .second-footer {
+        font-size: 8px;
+        flex-shrink: 0;
+        padding-top: 6px;
     }
 
-    .second-title .mission {
-        font-size: 16px;
+    /* ===== DETAIL OVERLAYS - FIXED TO FIT SCREEN ===== */
+    
+    .detail-overlay {
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .detail-top {
+        height: 35vh;
+        min-height: 180px;
+        max-height: 250px;
+        position: relative;
+        flex-shrink: 0;
+        overflow: hidden;
+    }
+    
+    /* Video positioning fixes for each detail page */
+    #detail-teaming .detail-top .detail-video {
+        transform: scale(1.6);
+        object-position: center center;
+    }
+    
+    #detail-hatchet .detail-top .detail-video {
+        transform: scale(1.35); 
+        object-position: center 50%; 
+    }
+    
+    #detail-dart .detail-top .detail-video {
+        object-position: center 20%;
+    }
+    
+    #detail-chorus .detail-top .detail-video {
+        object-position: center 25%;
     }
 
-    .team-members {
-        gap: 24px;
-        padding: 0 40px;
+    .detail-bottom {
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+    
+    .detail-left {
+        padding: 20px 16px 16px;
+        min-height: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    /* Hide the right panel (wireframe, stats, slick sheet) on mobile */
+    .detail-right {
+        display: none !important;
+    }
+    
+    .detail-left .eagle {
+        top: 16px;
+        right: 16px;
+        width: 28px;
+    }
+    
+    .detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        margin-bottom: 8px;
+        flex-shrink: 0;
+    }
+    
+    .detail-title {
+        font-size: 24px;
+    }
+    
+    .detail-subtitle {
+        font-size: 8px;
+    }
+    
+    .detail-divider {
+        margin-bottom: 12px;
+        flex-shrink: 0;
+    }
+    
+    .detail-features {
+        flex-direction: column;
+        gap: 12px;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .detail-features::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+    
+    /* Scroll indicator arrow - right side, fades on scroll */
+    .detail-features::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        right: 0;
+        width: 12px;
+        height: 12px;
+        border-right: 2px solid rgba(0, 0, 0, 0.5);
+        border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+        transform: rotate(45deg);
+        animation: scrollBounce 1.5s ease-in-out infinite;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+    }
+    
+    /* Hide arrow when scrolled - applied via JS */
+    .detail-features.scrolled::after {
+        opacity: 0;
+    }
+    
+    .detail-feature {
+        flex-shrink: 0;
+    }
+    
+    .feature-title {
+        font-size: 13px;
+        text-align: left;
+        margin-bottom: 4px;
+    }
+    
+    .feature-text {
+        font-size: 11px;
+        text-align: left;
+        line-height: 1.35;
+    }
+    
+    /* Footer pinned to bottom - FIXED ALIGNMENT */
+    .detail-footer {
+        font-size: 8px;
+        gap: 0;
+        margin-top: auto;
+        padding-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        flex-shrink: 0;
+        align-items: flex-end;
+        justify-content: center;
+    }
+    
+    .detail-footer span {
+        flex: none;
+        white-space: nowrap;
+    }
+    
+    .detail-footer span:first-child {
+        text-align: left;
+    }
+    
+    .detail-footer span:nth-child(2) {
+        text-align: center;
+        flex: 1;
+    }
+    
+    .detail-footer span:last-child {
+        text-align: right;
+    }
+    
+    /* Hide navigation arrows between sections */
+    .detail-nav {
+        display: none;
+    }
+    
+    .detail-close {
+        font-size: 18px;
+        top: 16px;
+    }
+    
+    /* Teaming detail adjustments */
+    .detail-overlay#detail-teaming .detail-left {
+        height: 100%;
+    }
+    
+    .detail-overlay#detail-teaming .eagle {
+        top: 16px;
+        right: 16px;
+    }
+    
+    .detail-overlay#detail-teaming .detail-divider {
+        width: 100%;
+    }
+    
+    /* Hide scroll indicator on teaming (no scrollable content) */
+    #detail-teaming .detail-features::after {
+        display: none;
+    }
+    /* ---------- TEAM - ALWAYS VISIBLE ---------- */
+    .member-image-container {
+        width: 200px;
+        height: 220px;
+        overflow: hidden;
+        margin-bottom: 12px;
+    }
+
+    .member-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .member-name {
+        font-size: clamp(14px, 1.4vw, 18px);
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        white-space: nowrap;
+    }
+
+    .member-subtitle {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        opacity: 0.7;
+        min-height: 1em;
+    }
+
+    .member-company {
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        opacity: 0.45;
+        margin-top: 2px;
+        font-weight: 500;
+    }
+
+    .team-member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #fff;
+        gap: 8px;
+    }
+    /* ===== NEWS PAGE ===== */
+    
+    #news {
+        padding: 16px;
+        height: 100vh;
+        height: 100dvh;
+        max-height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    #news .eagle-black {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 28px;
+    }
+    
+    .news-header {
+        margin-top: 32px;
+        margin-bottom: 12px;
+        flex-shrink: 0;
+    }
+    
+    .news-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    
+    .news-line {
+        max-width: 100%;
+    }
+    
+    .news-content {
+        flex: 1;
+        min-height: 0;
+        padding-bottom: 60px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .cards-scroll-container {
+        flex: 1;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        min-height: 0;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .cards-scroll-container::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+    
+    .cards-wrapper {
+        gap: 16px;
+        padding: 8px 4px;
+        height: 100%;
+    }
+    
+    .article-card {
+        width: 75vw;
+        max-width: 280px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .card-image {
+        flex: 1;
+        min-height: 0;
+    }
+    
+    .card-accent {
+        height: 4px;
+        flex-shrink: 0;
+    }
+    
+    .card-content {
+        min-height: auto;
+        padding: 14px 12px;
+        flex-shrink: 0;
+    }
+    
+    .card-title {
+        font-size: 15px;
+        margin-bottom: 8px;
+        line-height: 1.2;
+    }
+    
+    .card-publication {
+        font-size: 9px;
+    }
+    
+    .card-author {
+        font-size: 11px;
+    }
+    
+    .card-date {
+        font-size: 10px;
+    }
+    
+    .card-arrow {
+        width: 28px;
+        height: 28px;
         font-size: 12px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .our-articles-btn {
+        position: absolute;
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
+        justify-content: center;
+        padding: 12px 20px;
+        font-size: 11px;
+    }
+    
+    /* Hide custom scroll track on mobile */
+    .scroll-track-container,
+    .scrollbar-container {
+        display: none;
+    }
+    
+    /* ===== CONTACT/FOOTER PAGE - FIXED FOR iOS ===== */
+    
+    #contact {
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        max-height: none;
+        overflow: visible;
+        scroll-snap-align: start;
+        background: #171717;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+    }
+    
+    .contact-header {
+        padding: 20px;
+        min-height: auto;
+        flex-shrink: 0;
+        background: #f1f1ec;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .contact-header-content {
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+    }
+    
+    .contact-header-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-height: auto;
+    }
+    
+    .return-home {
+        display: none;
+    }
+    
+    .newsletter-title {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+    
+    .newsletter-form {
+        max-width: 100%;
+        padding: 3px;
+    }
+    
+    .newsletter-input {
+        flex: 1;
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+    
+    .newsletter-btn {
+        padding: 10px 16px;
+        font-size: 10px;
+        white-space: nowrap;
+    }
+    
+    .contact-main {
+        flex: 1;
+        padding: 48px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        background-image: url('https://cdn.prod.website-files.com/679a799ef4fd346f230ffb16/686a90b06f0480cc49083087_Footer-bg_2x.jpg');
+        background-size: cover;
+        background-position: center bottom;
+        background-repeat: no-repeat;
     }
 
-    .team-description {
-        font-size: 16px;
+    .contact-main::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.65);
+        z-index: 0;
     }
-
-    .team-cta-text {
-        font-size: 14px;
+    
+    .contact-bg-eagle {
+        display: none;
+    }
+        
+    .contact-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+    }
+    
+    .contact-left {
+        flex-direction: column;
+        gap: 0;
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    /* Hide navigation column on mobile */
+    .contact-left .contact-column:nth-child(2) {
+        display: none;
+    }
+    
+    .contact-column {
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    .contact-column-title {
+        font-size: 11px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+    
+    .contact-address {
+        font-size: 13px;
+        text-align: left;
+        line-height: 1.4;
+    }
+    
+    .contact-email {
+        font-size: 13px;
+        text-align: left;
+    }
+    
+    .social-links {
+        justify-content: flex-start;
+        gap: 36px;
+        margin-top: 12px;
+        width: 100%;
+    }
+    
+    .social-link svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .contact-right {
+        align-items: flex-start;
+        width: 100%;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    /* Larger MAVRIK logo on mobile */
+    .contact-logo {
+        width: 80%;
+        max-width: 300px;
+    }
+    
+    /* Footer all on one line */
+    .contact-footer {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        font-size: 8px;
+        margin-top: 10px;
+        white-space: nowrap;
+    }
+    
+    .contact-copyright {
+        text-align: left;
+    }
+    
+    /* Hide "All rights reserved" on mobile */
+    .hide-mobile {
+        display: none;
+    }
+    
+    .contact-footer-link {
+        text-align: left;
+    }
+    
+    /* Add separator dots between footer items */
+    .contact-footer-link::before {
+        content: "•";
+        margin-right: 8px;
+        opacity: 0.5;
     }
 }
 
 /* ---------- TEAM SECTION ---------- */
 #team {
-    background: #212121;
+    background: #000000;
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -557,10 +1408,10 @@ body.scroll-locked {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;  /* Changed from center */
+    justify-content: flex-start;
     text-align: center;
     gap: 48px;
-    padding-top: 18px;  /* Add some top padding */
+    padding-top: 18px;
 }
 
 .team-description {
@@ -578,7 +1429,7 @@ body.scroll-locked {
 }
 
 .team-cta-text {
-    font-size: clamp(16px, 1.8vw, 22px);
+    font-size: clamp(18px, 2vw, 24px);
     font-weight: 500;
     letter-spacing: 0.02em;
 }
@@ -639,6 +1490,8 @@ body.scroll-locked {
     cursor: pointer;
     transition: opacity 0.3s ease;
     z-index: 10;
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
+    font-style: normal;
 }
 
 .team-nav:hover {
@@ -664,18 +1517,12 @@ body.scroll-locked {
 }
 
 .member-image-container {
-    width: 240px;
-    height: 300px;
+    width: 200px;
+    height: 220px;
     overflow: hidden;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    margin-bottom: 12px;
-}
-
-.team-member:hover .member-image-container {
     opacity: 1;
-    transform: translateY(-40px);
+    transform: translateY(0);
+    margin-bottom: 12px;
 }
 
 .member-image {
@@ -701,13 +1548,8 @@ body.scroll-locked {
 .member-subtitle {
     font-size: 11px;
     letter-spacing: 0.1em;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    min-height: 1em;
-}
-
-.team-member:hover .member-subtitle {
     opacity: 0.7;
+    min-height: 1em;
 }
 
 /* ---------- DETAIL PAGE OVERLAY ---------- */
@@ -751,6 +1593,7 @@ body.scroll-locked {
     object-fit: cover;
     z-index: 0;
 }
+
 
 #detail-dart .detail-video {
     object-position: center 15%;
@@ -829,6 +1672,8 @@ body.scroll-locked {
     align-items: center;
     gap: 8px;
     transition: opacity 0.3s ease;
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
+    font-style: normal;
 }
 
 .detail-nav:hover {
@@ -853,6 +1698,8 @@ body.scroll-locked {
     font-size: 24px;
     cursor: pointer;
     transition: opacity 0.3s ease;
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
+    font-style: normal;
 }
 
 .detail-close:hover {
@@ -879,12 +1726,14 @@ body.scroll-locked {
 
 .detail-left {
     flex: 1;
-    background: #EFEFE6;
+    background: #BBB2A5;
     color: #000;
     padding: 40px 48px;
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .detail-left .eagle {
@@ -915,15 +1764,20 @@ body.scroll-locked {
 
 .detail-divider {
     width: 100%;
+    min-width: 100%;
     height: 1px;
     background: rgba(0, 0, 0, 0.3);
     margin-bottom: 32px;
+    flex-shrink: 0;
 }
 
 .detail-features {
     display: flex;
     gap: 40px;
     flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    margin-bottom: 16px;
 }
 
 .detail-feature {
@@ -937,7 +1791,7 @@ body.scroll-locked {
 }
 
 .feature-text {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.5;
     opacity: 0.85;
 }
@@ -953,6 +1807,8 @@ body.scroll-locked {
     letter-spacing: 0.14em;
     opacity: 0.6;
     margin-top: auto;
+    margin-top: 16px; /* Increase from auto to ensure minimum spacing */
+    padding-top: 16px; /* Increase padding */
 }
 
 .detail-right {
@@ -1037,6 +1893,7 @@ body.scroll-locked {
     letter-spacing: 0.1em;
     cursor: pointer;
     transition: background 0.3s ease, border-color 0.3s ease;
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
 }
 
 .slick-sheet-btn:hover {
@@ -1068,7 +1925,7 @@ body.scroll-locked {
 
 /* ---------- NEWS & ARTICLES SECTION ---------- */
 #news {
-    background: #EFEFE6;
+    background: #BBB2A5;
     color: #000;
     padding: 48px;
     display: flex;
@@ -1150,6 +2007,14 @@ body.scroll-locked {
     overflow-x: scroll;
     overflow-y: hidden;
     padding-bottom: 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.cards-scroll-container::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
 }
 
 .cards-wrapper {
@@ -1161,6 +2026,7 @@ body.scroll-locked {
 
 /* ---------- ARTICLE CARD ---------- */
 .article-card {
+    pointer-events: auto;
     position: relative;
     width: 380px;
     height: 100%;
@@ -1298,6 +2164,8 @@ body.scroll-locked {
     transition: all 0.3s ease;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     z-index: 2;
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
+    font-style: normal;
 }
 
 .article-card:hover .card-arrow {
@@ -1396,6 +2264,8 @@ body.scroll-locked {
 
 .our-articles-btn span {
     transition: transform 0.3s ease;
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
+    font-style: normal;
 }
 
 .our-articles-btn:hover span {
@@ -1516,6 +2386,8 @@ body.scroll-locked {
     cursor: pointer;
     color: #000;
     transition: opacity 0.3s ease;
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
+    font-style: normal;
 }
 
 .contact-top-arrow:hover {
@@ -1550,18 +2422,25 @@ body.scroll-locked {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    background-image: url('https://cdn.prod.website-files.com/679a799ef4fd346f230ffb16/686a90b06f0480cc49083087_Footer-bg_2x.jpg');
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+}
+
+.contact-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 0;
 }
 
 .contact-bg-eagle {
-    position: absolute;
-    top: 70%;
-    left: 0;
-    transform: translate(-50%, -50%);
-    height: 140%;
-    width: auto;
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: 0;
+    display: none;
 }
 
 .contact-bottom {
@@ -1675,7 +2554,7 @@ body.scroll-locked {
 .contact-footer {
     display: flex;
     align-items: center;
-    gap: 48px;
+    gap: 12px;
     font-size: 13px;
     opacity: 0.7;
 }
@@ -1700,12 +2579,11 @@ body.scroll-locked {
 </head>
 
 <body>
-
 <!-- ========== LANDING ========== -->
 <section id="landing">
 
     <video class="bg-video" autoplay muted loop playsinline>
-        <source src="bg.mp4" type="video/mp4">
+        <source src="bgg.mp4" type="video/mp4">
     </video>
     <div class="bg-overlay"></div>
 
@@ -1719,7 +2597,7 @@ body.scroll-locked {
         </div>
     </nav>
 
-    <img src="logo-eagle.png" class="eagle" alt="Eagle Logo">
+    <img src="HAVOC.png" class="eagle" alt="Eagle Logo">
 
     <!-- MAVRIK LOGO -->
     <img src="logo-text.png" class="logo-text" alt="MAVRIK">
@@ -1727,10 +2605,10 @@ body.scroll-locked {
     <!-- RIGHT TEXT GROUP -->
     <div class="right-copy">
         <div class="headline-group">
-            <div class="headline-line type" data-text="HELICOPTER"></div>
-            <div class="headline-line type" data-text="CAPABILITY //"></div>
-            <div class="headline-line type" data-text="DRONE"></div>
-            <div class="headline-line type" data-text="ECONOMICS."></div>
+            <div class="headline-line type" data-text="PROVIDING"></div>
+            <div class="headline-line type" data-text="AUTONOMY //"></div>
+            <div class="headline-line type" data-text="ANY"></div>
+            <div class="headline-line type" data-text="MISSION."></div>
         </div>
 
         <div class="small-group">
@@ -1748,8 +2626,8 @@ body.scroll-locked {
     <!-- Bottom baseline -->
     <div class="bottom-row">
         <div class="bottom-left-text">
-            <div class="type" data-text="MAVRIK INC. **"></div>
-            <div class="type" data-text="AERIAL AUTONOMY ///"></div>
+            <div class="type" data-text="HAVOC AI. **"></div>
+            <div class="type" data-text="MULTI-MISSION AUTONOMY ///"></div>
         </div>
 
         <div class="bottom-center type" data-text="- INTRODUCTION -"></div>
@@ -1758,7 +2636,6 @@ body.scroll-locked {
     </div>
 
 </section>
-
 <!-- ========== SECOND PAGE ========== -->
 <section id="second">
 
@@ -1766,8 +2643,8 @@ body.scroll-locked {
     <div class="second-header">
         <div class="second-title">
             <div class="second-title-text">
-                <div class="brand type-animation" data-text="MAVRIK"></div>
-                <div class="mission type-animation" data-text="Developing collaborative autonomous technologies that let a single human operator supervise 1000s of assets with ease."></div>
+                <div class="brand type-animation" data-text="HAVOC"></div>
+                <div class="mission type-animation" data-text="Havoc's autonomy links every vessel, sensor, and operator into a single adaptive network. In a single UI window, one person can command multiple heterogeneous fleets."></div>
             </div>
         </div>
 
@@ -1776,28 +2653,32 @@ body.scroll-locked {
 
     <!-- Grid -->
     <div class="second-grid fade-in">
-        <div class="tile hatchet" data-subtitle="HEAVY-LIFT UAS" data-detail="hatchet">
+        <div class="tile hatchet" data-subtitle="SCALABLE MARITIME AUONOMY" data-detail="hatchet">
+            <img src="SEA-LOGO.png" class="tile-logo" alt="">
             <div class="label-group">
-                <span class="label">HATCHET</span>
+                <span class="label">SEA</span>
                 <span class="subtitle"></span>
             </div>
         </div>
 
-        <div class="tile dart" data-subtitle="HIGH VELOCITY INTERCEPTOR" data-detail="dart">
+        <div class="tile dart" data-subtitle="NEXT-GEN CARGO LOGISTICS" data-detail="dart">
+            <img src="AIR-LOGO.png" class="tile-logo" alt="">
             <div class="label-group">
-                <span class="label">DART</span>
+                <span class="label">AIR</span>
                 <span class="subtitle"></span>
             </div>
         </div>
 
-        <div class="tile chorus" data-subtitle="DISTRIBUTED INTELLIGENCE GATHERING" data-detail="chorus">
+        <div class="tile chorus" data-subtitle="RETROFIT CONSTRUCTION AUTONOMY" data-detail="chorus">
+            <img src="LAND-LOGO.svg" class="tile-logo" alt="">
             <div class="label-group">
-                <span class="label">CHORUS</span>
+                <span class="label">LAND</span>
                 <span class="subtitle"></span>
             </div>
         </div>
 
-        <div class="tile teaming" data-subtitle="STRATEGIC PARTNERSHIPS" data-detail="teaming">
+        <div class="tile teaming" data-subtitle="COLLABORATIVE AUTONOMY STACK" data-detail="teaming">
+            <img src="TEAM-LOGO.png" class="tile-logo" alt="">
             <div class="label-group center">
                 <span class="label" style="color: #DFFC1E;">TEAMING</span>
                 <span class="subtitle" style="color: #DFFC1E;"></span>
@@ -1806,156 +2687,204 @@ body.scroll-locked {
     </div>
 
     <!-- Footer note -->
-    <div class="second-footer fade-in">ACTUAL MAVRIK FOOTAGE. NOT AI GENERATED.</div>
+    <div class="second-footer fade-in">ACTUAL HAVOC FOOTAGE. NOT AI GENERATED.</div>
 
-    <!-- ========== HATCHET DETAIL ========== -->
+    <!-- ========== HATCHET DETAIL (SEA) ========== -->
     <div class="detail-overlay" id="detail-hatchet">
         <div class="detail-top">
             <video class="detail-video" autoplay muted loop playsinline>
-                <source src="hatchet.mp4" type="video/mp4">
+                <source src="SEA.mp4" type="video/mp4">
             </video>
-            <div class="detail-close detail-anim detail-anim-nav" onclick="closeDetail()">↓</div>
-            <div class="detail-nav detail-nav-left detail-anim detail-anim-nav" onclick="switchDetail('teaming')">← TEAMING</div>
-            <div class="detail-nav detail-nav-right detail-anim detail-anim-nav" onclick="switchDetail('dart')">DART →</div>
+            <div class="detail-close detail-anim detail-anim-nav" onclick="closeDetail()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 3L8 13M8 13L3 8M8 13L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="detail-nav detail-nav-left detail-anim detail-anim-nav" onclick="switchDetail('teaming')">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 7H3M3 7L7 3M3 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                TEAMING
+            </div>
+            <div class="detail-nav detail-nav-right detail-anim detail-anim-nav" onclick="switchDetail('dart')">
+                AIR
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
         </div>
         <div class="detail-bottom">
             <div class="detail-left">
-                <img src="logo-eagle-black.png" class="eagle detail-anim detail-anim-eagle" alt="Eagle Logo">
+                <img src="SEA-BLACK.png" class="eagle detail-anim detail-anim-eagle" alt="Eagle Logo">
                 <div class="detail-header">
-                    <span class="detail-title detail-anim detail-anim-type" data-text="HATCHET"></span>
-                    <span class="detail-subtitle detail-anim detail-anim-type-sub" data-text="/// HEAVY-LIFT|AUTONOMOUS UTILITY"></span>
+                    <span class="detail-title detail-anim detail-anim-type" data-text="SEA"></span>
+                    <span class="detail-subtitle detail-anim detail-anim-type-sub" data-text="/// MARITIME|SYSTEMS"></span>
                 </div>
                 <div class="detail-divider detail-anim detail-anim-content"></div>
                 <div class="detail-features detail-anim detail-anim-content">
-                    <div class="detail-feature">
-                        <div class="feature-title">Versatile</div>
-                        <div class="feature-text">HATCHET excels across diverse missions with pickup-truck-style modularity, transporting heavy or awkward payloads over long distances.</div>
+                    <div class="detail-feature" data-wireframe="SEA-WIREFRAME.svg" onclick="switchWireframe(this)">
+                        <div class="feature-title">Rampage</div>
+                        <div class="feature-text">Versatile, expendable, and scalable ASV. All-electric with indefinite solar loiter at 3kts, 15kt max speed, and 300lb payload. Supports MDA, contested logistics, EW, and strike — beach-launchable by 4 personnel.</div>
                     </div>
 
-                    <div class="detail-feature">
-                        <div class="feature-title">Hovering</div>
-                        <div class="feature-text">HATCHET flies purely vertical — holding/aiming directed electronics, long-line payload pickup, and low/complex stealth routes. Minimal aero constraints for arbitrary payloads.</div>
+                    <div class="detail-feature" data-wireframe="SEA-WIREFRAME.svg" onclick="switchWireframe(this)">
+                        <div class="feature-title">Kaikoa</div>
+                        <div class="feature-text">Available at 20–42ft, Kaikoa operates alongside Rampage fleets as an autonomous support vessel. Up to 40kts, 3,640lb cargo capacity, with ISR&T, EW, contested logistics, and multi-domain strike capability.</div>
                     </div>
 
-                    <div class="detail-feature">
-                        <div class="feature-title">Large-Scale</div>
-                        <div class="feature-text">HATCHET packs densely into containers, networks for fully automatic distributed logistics, deploys other autonomous systems, and relays tracks/data via SATCOM.</div>
+                    <div class="detail-feature" data-wireframe="SEA-WIREFRAME.svg" onclick="switchWireframe(this)">
+                        <div class="feature-title">Atlas</div>
+                        <div class="feature-text">Long-range, high-capacity vessel at 100–140ft for sustained operations. Supports containerized mission packages including electronic warfare, fires, and fleet support across extended deployments.</div>
                     </div>
                 </div>
                 <div class="detail-footer detail-anim detail-anim-content">
-                    <span>MAVRIK INC **</span>
-                    <span>HATCHET ///</span>
-                    <span>- LOGISTICS -</span>
+                    <span>HAVOC AI **</span>
+                    <span>SEA ///</span>
+                    <span>- MARITIME SYSTEMS -</span>
                 </div>
             </div>
             <div class="detail-right">
                 <div class="detail-wireframe detail-anim detail-anim-right">
-                    <img src="hatchet-wireframe.png" alt="Hatchet Wireframe">
+                    <img src="SEA-WIREFRAME.svg" alt="Sea Wireframe">
                 </div>
-                <img src="hatchet-stats.png" class="detail-stats detail-anim detail-anim-right" alt="Hatchet Stats">
-                <button class="slick-sheet-btn detail-anim detail-anim-right">SLICK SHEET ↗</button>
+                <button class="slick-sheet-btn detail-anim detail-anim-right" onclick="window.open('https://www.havocai.com/maritime-systems', '_blank')">
+                    LEARN MORE
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline; vertical-align: middle; margin-left: 6px;">
+                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- ========== DART DETAIL ========== -->
+    <!-- ========== DART DETAIL (AIR) ========== -->
     <div class="detail-overlay" id="detail-dart">
         <div class="detail-top">
             <video class="detail-video" autoplay muted loop playsinline>
-                <source src="dart.mp4" type="video/mp4">
+                <source src="AIR.mp4" type="video/mp4">
             </video>
-            <div class="detail-close detail-anim detail-anim-nav" onclick="closeDetail()">↓</div>
-            <div class="detail-nav detail-nav-left detail-anim detail-anim-nav" onclick="switchDetail('hatchet')">← HATCHET</div>
-            <div class="detail-nav detail-nav-right detail-anim detail-anim-nav" onclick="switchDetail('chorus')">CHORUS →</div>
+            <div class="detail-close detail-anim detail-anim-nav" onclick="closeDetail()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 3L8 13M8 13L3 8M8 13L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="detail-nav detail-nav-left detail-anim detail-anim-nav" onclick="switchDetail('hatchet')">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 7H3M3 7L7 3M3 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                SEA
+            </div>
+            <div class="detail-nav detail-nav-right detail-anim detail-anim-nav" onclick="switchDetail('chorus')">
+                LAND
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
         </div>
         <div class="detail-bottom">
             <div class="detail-left">
-                <img src="logo-eagle-black.png" class="eagle detail-anim detail-anim-eagle" alt="Eagle Logo">
+                <img src="AIR-BLACK.png" class="eagle detail-anim detail-anim-eagle" alt="Eagle Logo">
                 <div class="detail-header">
-                    <span class="detail-title detail-anim detail-anim-type" data-text="DART"></span>
-                    <span class="detail-subtitle detail-anim detail-anim-type-sub" data-text="/// HIGH VELOCITY|INTERCEPTOR"></span>
+                    <span class="detail-title detail-anim detail-anim-type" data-text="AIR"></span>
+                    <span class="detail-subtitle detail-anim detail-anim-type-sub" data-text="/// AERIAL|SYSTEMS"></span>
                 </div>
                 <div class="detail-divider detail-anim detail-anim-content"></div>
                 <div class="detail-features detail-anim detail-anim-content">
-                    <div class="detail-features detail-anim detail-anim-content">
-                        <div class="detail-features detail-anim detail-anim-content">
-                            <div class="detail-feature">
-                                <div class="feature-title">Performance</div>
-                                <div class="feature-text">DART exceeds 250 mph to pursue fast targets, strikes UAS at high altitude, and evades CUAS defenses.</div>
-                            </div>
-                            <div class="detail-feature">
-                                <div class="feature-title">Active</div>
-                                <div class="feature-text">DART carries explosive payload or shotgun array (per configuration) for reliable effect without requiring ultra-close intercept.</div>
-                            </div>
-                            <div class="detail-feature">
-                                <div class="feature-title">Attritable</div>
-                                <div class="feature-text">DART uses mostly plastic airframe and simple skeleton, combining basic optical sensing with networked targeting data instead of complex seekers.</div>
-                            </div>
-                        </div>
+                    <div class="detail-feature active" data-wireframe="hatchet-wireframe.png" onclick="switchWireframe(this)">
+                        <div class="feature-title">Hatchet</div>
+                        <div class="feature-text">Heavy-lift autonomous utility. Pickup-truck-style modularity for heavy or awkward payloads over long distances. Flies purely vertical for holding, aiming, long-line pickup, and low/complex stealth routes. Packs densely into containers and relays data via SATCOM.</div>
+                    </div>
+                    <div class="detail-feature" data-wireframe="dart-wireframe.png" onclick="switchWireframe(this)">
+                        <div class="feature-title">Dart</div>
+                        <div class="feature-text">High-velocity interceptor exceeding 250 mph. Carries explosive payload or shotgun array for reliable effect without ultra-close intercept. Mostly plastic airframe with basic optical sensing and networked targeting data instead of complex seekers.</div>
+                    </div>
+                    <div class="detail-feature" data-wireframe="chorus-wireframe.png" onclick="switchWireframe(this)">
+                        <div class="feature-title">Chorus</div>
+                        <div class="feature-text">Distributed intelligence gathering. Fuses visual, acoustic, and radio data into precise composite tracks. Runs weeks on large batteries and solar power. Spaces inexpensive sensors to create synthetic apertures and 3D triangulation at mission-supportive cost.</div>
                     </div>
                 </div>
                 <div class="detail-footer detail-anim detail-anim-content">
                     <span>MAVRIK INC **</span>
-                    <span>DART ///</span>
-                    <span>- COUNTER UAS -</span>
+                    <span>AIR ///</span>
+                    <span>- AERIAL SYSTEMS -</span>
                 </div>
             </div>
             <div class="detail-right">
                 <div class="detail-wireframe detail-anim detail-anim-right">
-                    <img src="dart-wireframe.png" alt="Dart Wireframe">
+                    <img src="hatchet-wireframe.png" alt="Air Wireframe">
                 </div>
-                <img src="dart-stats.png" class="detail-stats detail-anim detail-anim-right" alt="Dart Stats">
-                <button class="slick-sheet-btn detail-anim detail-anim-right">SLICK SHEET ↗</button>
+                <button class="slick-sheet-btn detail-anim detail-anim-right">
+                    LEARN MORE
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline; vertical-align: middle; margin-left: 6px;">
+                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- ========== CHORUS DETAIL ========== -->
+    <!-- ========== CHORUS DETAIL (LAND) ========== -->
     <div class="detail-overlay" id="detail-chorus">
         <div class="detail-top">
             <video class="detail-video" autoplay muted loop playsinline>
-                <source src="chorus.mp4" type="video/mp4">
+                <source src="LAND.mp4" type="video/mp4">
             </video>
-            <div class="detail-close detail-anim detail-anim-nav" onclick="closeDetail()">↓</div>
-            <div class="detail-nav detail-nav-left detail-anim detail-anim-nav" onclick="switchDetail('dart')">← DART</div>
-            <div class="detail-nav detail-nav-right detail-anim detail-anim-nav" onclick="switchDetail('teaming')">TEAMING →</div>
+            <div class="detail-close detail-anim detail-anim-nav" onclick="closeDetail()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 3L8 13M8 13L3 8M8 13L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="detail-nav detail-nav-left detail-anim detail-anim-nav" onclick="switchDetail('dart')">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 7H3M3 7L7 3M3 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                AIR
+            </div>
+            <div class="detail-nav detail-nav-right detail-anim detail-anim-nav" onclick="switchDetail('teaming')">
+                TEAMING
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
         </div>
         <div class="detail-bottom">
             <div class="detail-left">
-                <img src="logo-eagle-black.png" class="eagle detail-anim detail-anim-eagle" alt="Eagle Logo">
+                <img src="LAND-BLACK.png" class="eagle detail-anim detail-anim-eagle" alt="Eagle Logo">
                 <div class="detail-header">
-                    <span class="detail-title detail-anim detail-anim-type" data-text="CHORUS"></span>
-                    <span class="detail-subtitle detail-anim detail-anim-type-sub" data-text="/// DISTRIBUTED INTELLIGENCE|GATHERING"></span>
+                    <span class="detail-title detail-anim detail-anim-type" data-text="LAND"></span>
+                    <span class="detail-subtitle detail-anim detail-anim-type-sub" data-text="/// RETROFIT SUPERVISED|AUTONOMY"></span>
                 </div>
                 <div class="detail-divider detail-anim detail-anim-content"></div>
                 <div class="detail-features detail-anim detail-anim-content">
                     <div class="detail-feature">
-                        <div class="feature-title">Collaborative</div>
-                        <div class="feature-text">CHORUS fuses visual, acoustic, and radio data into precise composite tracks. Configurable for self-deployment, maritime use, or strategic manual placement.</div>
+                        <div class="feature-title">Universal Retrofit</div>
+                        <div class="feature-text">Bolt-on kit converts existing heavy machinery — dozers, loaders, trucks — into remotely operated and semi-autonomous assets. No new equipment purchases required; works across makes and models.</div>
                     </div>
-
                     <div class="detail-feature">
-                        <div class="feature-title">Enduring</div>
-                        <div class="feature-text">CHORUS runs weeks on large batteries, solar power, and low-power passive sensors. Distributed architecture avoids single-point dependency across wide areas.</div>
+                        <div class="feature-title">Supervised Autonomy</div>
+                        <div class="feature-text">One operator supervises multiple machines from a remote command center. Proprietary software blends machine learning with human skill, keeping operators safe and comfortable while boosting fleet productivity.</div>
                     </div>
-
                     <div class="detail-feature">
-                        <div class="feature-title">Low-Cost</div>
-                        <div class="feature-text">CHORUS spaces inexpensive optical, sonic, and radio sensors to create synthetic apertures and 3D triangulation — delivering accurate tracks at a price that supports high-risk missions.</div>
+                        <div class="feature-title">Scalable Operations</div>
+                        <div class="feature-text">Robust mesh networking enables real-time video, control, and analytics across sites. Idle equipment returns to service, operational visibility improves through historical data, and workforce accessibility expands.</div>
                     </div>
                 </div>
                 <div class="detail-footer detail-anim detail-anim-content">
-                    <span>MAVRIK INC **</span>
-                    <span>CHORUS ///</span>
-                    <span>- SURVEILLANCE -</span>
+                    <span>TELEO AI **</span>
+                    <span>LAND ///</span>
+                    <span>- GROUND SYSTEMS -</span>
                 </div>
             </div>
             <div class="detail-right">
                 <div class="detail-wireframe detail-anim detail-anim-right">
-                    <img src="chorus-wireframe.png" alt="Chorus Wireframe">
+                    <img src="tractor-wireframe.svg" alt="Land Wireframe">
                 </div>
-                <img src="chorus-stats.png" class="detail-stats detail-anim detail-anim-right" alt="Chorus Stats">
-                <button class="slick-sheet-btn detail-anim detail-anim-right">SLICK SHEET ↗</button>
+                <button class="slick-sheet-btn detail-anim detail-anim-right" onclick="window.open('https://www.teleo.ai', '_blank')">
+                    LEARN MORE
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline; vertical-align: middle; margin-left: 6px;">
+                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
@@ -1964,26 +2893,52 @@ body.scroll-locked {
     <div class="detail-overlay" id="detail-teaming">
         <div class="detail-top">
             <video class="detail-video" autoplay muted loop playsinline>
-                <source src="manifest.mp4" type="video/mp4">
+                <source src="teamingg.mp4" type="video/mp4">
             </video>
-            <div class="detail-close detail-anim detail-anim-nav" onclick="closeDetail()">↓</div>
-            <div class="detail-nav detail-nav-left detail-anim detail-anim-nav" onclick="switchDetail('chorus')">← CHORUS</div>
-            <div class="detail-nav detail-nav-right detail-anim detail-anim-nav" onclick="switchDetail('hatchet')">HATCHET →</div>
+            <div class="detail-close detail-anim detail-anim-nav" onclick="closeDetail()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 3L8 13M8 13L3 8M8 13L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="detail-nav detail-nav-left detail-anim detail-anim-nav" onclick="switchDetail('chorus')">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 7H3M3 7L7 3M3 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                LAND
+            </div>
+            <div class="detail-nav detail-nav-right detail-anim detail-anim-nav" onclick="switchDetail('hatchet')">
+                SEA
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
         </div>
         <div class="detail-bottom">
             <div class="detail-left">
-                <img src="logo-eagle-black.png" class="eagle detail-anim detail-anim-eagle" alt="Eagle Logo">
+                <img src="HAVOC-BLACK.png" class="eagle detail-anim detail-anim-eagle" alt="Eagle Logo">
                 <div class="detail-header">
                     <span class="detail-title detail-anim detail-anim-type" data-text="TEAMING"></span>
-                    <span class="detail-subtitle detail-anim detail-anim-type-sub" data-text="/// STRATEGIC|PARTNERSHIPS"></span>
+                    <span class="detail-subtitle detail-anim detail-anim-type-sub" data-text="/// COLLABORATIVE AUTONOMY STACK"></span>
                 </div>
                 <div class="detail-divider detail-anim detail-anim-content"></div>
                 <div class="detail-features detail-anim detail-anim-content">
+                    <div class="detail-feature">
+                        <div class="feature-title">Havoc Control</div>
+                        <div class="feature-text">Real-time operator interface for command, planning, and insight across autonomous fleets. One operator orchestrates what used to require many — with full transparency, override capability, and mission-critical reliability.</div>
+                    </div>
+                    <div class="detail-feature">
+                        <div class="feature-title">Havoc Cloud</div>
+                        <div class="feature-text">Distributed comms mesh that keeps unmanned fleets connected when C2 is disrupted. Sustains resilient command and autonomous execution even under cyber, electronic, or kinetic attack across denied zones.</div>
+                    </div>
+                    <div class="detail-feature">
+                        <div class="feature-title">Havoc OS</div>
+                        <div class="feature-text">Onboard autonomy software enabling unmanned systems to operate as a coordinated swarm. Integrates with existing C2 without added burden, delivering scalable autonomy and hardened cyber defenses.</div>
+                    </div>
                 </div>
                 <div class="detail-footer detail-anim detail-anim-content">
-                    <span>MAVRIK INC **</span>
+                    <span>HAVOC AI **</span>
                     <span>TEAMING ///</span>
-                    <span>- PARTNERSHIPS -</span>
+                    <span>- COLLABORATIVE AUTONOMY STACK -</span>
                 </div>
             </div>
         </div>
@@ -1994,11 +2949,11 @@ body.scroll-locked {
 <!-- ========== TEAM PAGE ========== -->
 <section id="team">
 
-    <img src="logo-eagle.png" class="eagle fade-in" alt="Eagle Logo">
+    <img src="HAVOC.png" class="eagle fade-in" alt="Eagle Logo">
 
     <!-- Header -->
     <div class="team-header">
-        <div class="team-title type-animation" data-text="TEAM"></div>
+        <div class="team-title type-animation" data-text="LEADERSHIP"></div>
         <div class="team-line"></div>
     </div>
 
@@ -2011,103 +2966,65 @@ body.scroll-locked {
 
         <div class="team-cta">
             <p class="team-cta-text">If you want to help protect our country and love technology</p>
-            <span class="apply-link" onclick="window.location.href='#'">APPLY NOW ↗</span>
+            <span class="apply-link" onclick="window.location.href='#'">
+                APPLY NOW
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline; vertical-align: middle; margin-left: 4px;">
+                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
         </div>
     </div>
 
     <!-- Team members -->
     <div class="team-members fade-in">
-        <span class="team-nav team-nav-left" onclick="switchTeamPage(-1)">←</span>
-        
         <div class="team-carousel">
-            <!-- Page 1 -->
             <div class="team-page active" data-page="0">
-                <div onclick="window.open('https://www.linkedin.com/in/rishi-mannava-10a045223/')" class="team-member">
+                <div class="team-member">
                     <div class="member-image-container">
-                        <img src="rishi.png" alt="Rishi Mannava" class="member-image">
+                        <img src="paul.png" alt="Paul Lwin" class="member-image">
                     </div>
-                    <span class="member-name">RISHI MANNAVA</span>
-                    <span class="member-subtitle">COO</span>
+                    <span class="member-name">PAUL LWIN</span>
+                    <span class="member-subtitle">CEO & CO-FOUNDER</span>
+                    <span class="member-company">HAVOC AI</span>
                 </div>
 
-                <div onclick="window.open('https://www.linkedin.com/in/jtklenke/')" class="team-member">
+                <div class="team-member">
                     <div class="member-image-container">
-                        <img src="jt.png" alt="JT Klenke" class="member-image">
+                        <img src="joe.png" alt="Joe Turner" class="member-image">
                     </div>
-                    <span class="member-name">JT KLENKE</span>
-                    <span class="member-subtitle">CSE</span>
+                    <span class="member-name">JOE TURNER</span>
+                    <span class="member-subtitle">COO & CO-FOUNDER</span>
+                    <span class="member-company">HAVOC AI</span>
                 </div>
 
-                <div onclick="window.open('https://www.linkedin.com/in/maxhowens/')" class="team-member">
+                <div class="team-member">
+                    <div class="member-image-container">
+                        <img src="vinay.png" alt="Vinay Shet" class="member-image">
+                    </div>
+                    <span class="member-name">VINAY SHET</span>
+                    <span class="member-subtitle">CEO & CO-FOUNDER</span>
+                    <span class="member-company">TELEO AI</span>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image-container">
+                        <img src="rom.png" alt="Rom Clemet" class="member-image">
+                    </div>
+                    <span class="member-name">ROM CLEMET</span>
+                    <span class="member-subtitle">CTO & CO-FOUNDER</span>
+                    <span class="member-company">TELEO AI</span>
+                </div>
+
+                <div class="team-member">
                     <div class="member-image-container">
                         <img src="max.png" alt="Max Owens" class="member-image">
                     </div>
                     <span class="member-name">MAX OWENS</span>
-                    <span class="member-subtitle">CEO</span>
-                </div>
-
-                <div onclick="window.open('https://www.linkedin.com/in/ryan-ellis-320746219/')" class="team-member">
-                    <div class="member-image-container">
-                        <img src="ryan.png" alt="Ryan Ellis" class="member-image">
-                    </div>
-                    <span class="member-name">RYAN ELLIS</span>
-                    <span class="member-subtitle">CTO</span>
-                </div>
-
-                <div onclick="window.open('https://www.linkedin.com/in/mosaia/')" class="team-member">
-                    <div class="member-image-container">
-                        <img src="mohamed.png" alt="Mohamed Ahmed" class="member-image">
-                    </div>
-                    <span class="member-name">MOHAMED AHMED</span>
-                    <span class="member-subtitle">HEAD OF MEDIA</span>
-                </div>
-            </div>
-
-            <!-- Page 2 -->
-            <div class="team-page" data-page="1">
-                <div onclick="window.open('https://www.linkedin.com/in/wh474/')" class="team-member">
-                    <div class="member-image-container">
-                        <img src="weiyi.png" alt="Weiyi Huang" class="member-image">
-                    </div>
-                    <span class="member-name">WEIYI HUANG</span>
-                    <span class="member-subtitle">LEAD ELECTRICAL ENGINEER</span>
-                </div>
-
-                <div onclick="window.open('https://www.linkedin.com/in/nathan-sheng-44a3852bb/')" class="team-member">
-                    <div class="member-image-container">
-                        <img src="nathan.png" alt="Nathan Shang" class="member-image">
-                    </div>
-                    <span class="member-name">NATHAN SHANG</span>
-                    <span class="member-subtitle">LEAD MECHANICAL ENGINEER</span>
-                </div>
-
-                <div onclick="window.open('https://www.linkedin.com/in/joelbeam5326/')" class="team-member">
-                    <div class="member-image-container">
-                        <img src="joel.png" alt="Joel Beam" class="member-image">
-                    </div>
-                    <span class="member-name">JOEL BEAM</span>
-                    <span class="member-subtitle">HEAD OF STRATEGY</span>
-                </div>
-
-                <div onclick="window.open('https://www.linkedin.com/in/tech-tim/')" class="team-member">
-                    <div class="member-image-container">
-                        <img src="tim.png" alt="Tim Chrisman" class="member-image">
-                    </div>
-                    <span class="member-name">TIM CHRISMAN</span>
-                    <span class="member-subtitle">GOVERNMENT GROWTH</span>
-                </div>
-
-                <div onclick="window.open('https://www.linkedin.com/in/justin-sadeghian-a4685741/')" class="team-member">
-                    <div class="member-image-container">
-                        <img src="justin.png" alt="Justin Sadeghian" class="member-image">
-                    </div>
-                    <span class="member-name">JUSTIN SADEGHIAN</span>
-                    <span class="member-subtitle">PARTNERSHIPS LEAD</span>
+                    <span class="member-subtitle">CEO & FOUNDER</span>
+                    <span class="member-company">MAVRIK INC</span>
                 </div>
             </div>
         </div>
-
-        <span class="team-nav team-nav-right" onclick="switchTeamPage(1)">→</span>
     </div>
 
 </section>
@@ -2143,7 +3060,11 @@ body.scroll-locked {
                             </div>
                         </div>
                     </div>
-                    <div class="card-arrow">↗</div>
+                    <div class="card-arrow">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                 </div>
                 
                 <!-- Card 2: Contested Logistics -->
@@ -2164,7 +3085,11 @@ body.scroll-locked {
                             </div>
                         </div>
                     </div>
-                    <div class="card-arrow">↗</div>
+                    <div class="card-arrow">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                 </div>
                 
                 <!-- Card 3: Battlefield Logistics -->
@@ -2185,7 +3110,11 @@ body.scroll-locked {
                             </div>
                         </div>
                     </div>
-                    <div class="card-arrow">↗</div>
+                    <div class="card-arrow">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                 </div>
                 
                 <!-- Card 4: Optionally Piloted Helicopters -->
@@ -2206,7 +3135,11 @@ body.scroll-locked {
                             </div>
                         </div>
                     </div>
-                    <div class="card-arrow">↗</div>
+                    <div class="card-arrow">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                 </div>
                 
                 <!-- Card 5: Heavy Lift Helicopter Teams -->
@@ -2227,7 +3160,11 @@ body.scroll-locked {
                             </div>
                         </div>
                     </div>
-                    <div class="card-arrow">↗</div>
+                    <div class="card-arrow">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                 </div>
                 
             </div>
@@ -2241,9 +3178,13 @@ body.scroll-locked {
         </div>
     </div>
 
-    <button class="our-articles-btn" onclick="window.open('#', '_blank')">
+    <button class="our-articles-btn">
         OUR ARTICLES
-        <span>↗</span>
+        <span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 10L10 4M10 4H5M10 4V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
     </button>
 </section>
 
@@ -2260,7 +3201,11 @@ body.scroll-locked {
                 </div>
             </div>
             <div class="contact-header-right">
-                <div class="contact-top-arrow" onclick="document.getElementById('landing').scrollIntoView({ behavior: 'smooth' })">↑</div>
+                <div class="contact-top-arrow" onclick="document.getElementById('landing').scrollIntoView({ behavior: 'smooth' })">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 16V4M10 4L4 10M10 4L16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
                 <span class="return-home">Return to Home</span>
             </div>
         </div>
@@ -2268,26 +3213,28 @@ body.scroll-locked {
 
     <!-- Dark main area -->
     <div class="contact-main">
-        <img src="logo-eagle.png" class="contact-bg-eagle" alt="">
+        <img src="HAVOC.png" class="contact-bg-eagle" alt="">
         
         <div class="contact-bottom">
             <div class="contact-left">
                 <!-- Contact column -->
                 <div class="contact-column">
-                    <h4 class="contact-column-title">CONTACT</h4>
-                    <p class="contact-address">
-                        2021 W Gaylord St<br>
-                        Long Beach, CA 90813
-                    </p>
-                    <span class="contact-email" onclick="window.location.href='mailto:info@mavrik.tech'">info@mavrik.tech</span>
+                    <h4 class="contact-column-title">LOCATIONS</h4>
+                    <div class="locations-grid">
+                        <span class="location-item">Providence, RI</span>
+                        <span class="location-item">Boston, MA</span>
+                        <span class="location-item">Austin, TX</span>
+                        <span class="location-item">Washington, DC</span>
+                        <span class="location-item">Honolulu, HI</span>
+                    </div>
                     <div class="social-links">
-                        <span onclick="window.open('https://linkedin.com', '_blank')" class="social-link">
+                        <span class="social-link">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                         </span>
-                        <span onclick="window.open('https://instagram.com', '_blank')" class="social-link">
+                        <span class="social-link">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
                         </span>
-                        <span onclick="window.open('https://x.com', '_blank')" class="social-link">
+                        <span class="social-link">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                         </span>
                     </div>
@@ -2308,15 +3255,14 @@ body.scroll-locked {
             <div class="contact-right">
                 <img src="logo-text.png" class="contact-logo" alt="MAVRIK">
                 <div class="contact-footer">
-                    <span class="contact-copyright">© 2026 MAVRIK INC. All rights reserved</span>
-                    <span class="contact-footer-link" onclick="window.location.href='#'">Terms of Use</span>
-                    <span class="contact-footer-link" onclick="window.location.href='#'">Privacy Policy</span>
+                    <span class="contact-copyright">© 2026 HAVOC AI.<span class="hide-mobile"> All rights reserved</span></span>
+                    <span class="contact-footer-link">Terms of Use</span>
+                    <span class="contact-footer-link">Privacy Policy</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 <script>
 /* ---------- Section Animation Tracking ---------- */
 const animatedSections = new Set();
@@ -2426,23 +3372,43 @@ function animateNews() {
     const title = document.querySelector('#news .news-title.type-animation');
     if (title) typeText(title, 30);
     
-    // Fade in eagle and main content
+    // Fade in eagle
     const eagle = document.querySelector('#news .eagle-black.fade-in');
-    const main = document.querySelector('#news .news-main');
-    
     setTimeout(() => {
         if (eagle) eagle.classList.add('animated');
     }, 200);
+    
+    // Animate the line
+    const line = document.querySelector('#news .news-line');
     setTimeout(() => {
-        if (main) main.classList.add('animated');
+        if (line) line.classList.add('animated');
+    }, 300);
+    
+    // Fade in the scroll container
+    const scrollContainer = document.querySelector('#news .cards-scroll-container');
+    setTimeout(() => {
+        if (scrollContainer) scrollContainer.classList.add('animated');
     }, 500);
+    
+    // Animate individual cards with stagger
+    const cards = document.querySelectorAll('#news .article-card');
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.add('animated');
+        }, 600 + (index * 100));
+    });
+    
+    // Show scroll track
+    const scrollTrackContainer = document.querySelector('#news .scroll-track-container');
+    setTimeout(() => {
+        if (scrollTrackContainer) scrollTrackContainer.classList.add('visible');
+    }, 900);
     
     // Fade in button
     const btn = document.querySelector('#news .our-articles-btn');
-    
     setTimeout(() => {
         if (btn) btn.classList.add('animated');
-    }, 700);
+    }, 1100);
 }
 
 /* ---------- Intersection Observer for Sections ---------- */
@@ -2514,41 +3480,33 @@ tiles.forEach(tile => {
 let currentDetail = null;
 let detailAnimationIntervals = [];
 let detailAnimationTimeouts = [];
-const animatedDetails = new Set(); // Track which detail pages have been animated
+const animatedDetails = new Set();
 
-/* ---------- Detail Page Animation ---------- */
 function clearDetailAnimations() {
-    // Clear all intervals
     detailAnimationIntervals.forEach(interval => clearInterval(interval));
     detailAnimationIntervals = [];
     
-    // Clear all timeouts
     detailAnimationTimeouts.forEach(timeout => clearTimeout(timeout));
     detailAnimationTimeouts = [];
 }
 
 function animateDetailPage(detailId) {
-    // If already animated, just show everything immediately
     if (animatedDetails.has(detailId)) {
         showDetailPageInstantly(detailId);
         return;
     }
     
-    // Mark as animated
     animatedDetails.add(detailId);
     
     const detail = document.getElementById('detail-' + detailId);
     if (!detail) return;
     
-    // Clear any existing animations
     clearDetailAnimations();
     
-    // Reset all animations first
     detail.querySelectorAll('.detail-anim').forEach(el => {
         el.classList.remove('animated');
     });
     
-    // Get elements
     const title = detail.querySelector('.detail-title.detail-anim-type');
     const subtitle = detail.querySelector('.detail-subtitle.detail-anim-type-sub');
     const eagle = detail.querySelector('.eagle.detail-anim-eagle');
@@ -2556,7 +3514,6 @@ function animateDetailPage(detailId) {
     const rightEls = detail.querySelectorAll('.detail-anim-right');
     const navEls = detail.querySelectorAll('.detail-anim-nav');
     
-    // 1. Type in title
     if (title && title.dataset.text) {
         const text = title.dataset.text;
         title.textContent = '';
@@ -2571,7 +3528,6 @@ function animateDetailPage(detailId) {
         detailAnimationIntervals.push(titleInterval);
     }
     
-    // 2. Type in subtitle (after title)
     const subtitleTimeout = setTimeout(() => {
         if (subtitle && subtitle.dataset.text) {
             const lines = subtitle.dataset.text.split('|');
@@ -2605,7 +3561,6 @@ function animateDetailPage(detailId) {
     }, 300);
     detailAnimationTimeouts.push(subtitleTimeout);
     
-    // 3. Fade in eagle
     const eagleTimeout = setTimeout(() => {
         if (eagle) {
             eagle.classList.add('animated');
@@ -2613,7 +3568,6 @@ function animateDetailPage(detailId) {
     }, 200);
     detailAnimationTimeouts.push(eagleTimeout);
     
-    // 4. Fade in content (features, divider, footer)
     const contentTimeout = setTimeout(() => {
         contentEls.forEach(el => {
             el.classList.add('animated');
@@ -2621,7 +3575,6 @@ function animateDetailPage(detailId) {
     }, 600);
     detailAnimationTimeouts.push(contentTimeout);
     
-    // 5. Fade in right side (stats, wireframe, button)
     const rightTimeout = setTimeout(() => {
         rightEls.forEach(el => {
             el.classList.add('animated');
@@ -2629,7 +3582,6 @@ function animateDetailPage(detailId) {
     }, 800);
     detailAnimationTimeouts.push(rightTimeout);
     
-    // 6. Fade in navigation arrows (last)
     const navTimeout = setTimeout(() => {
         navEls.forEach(el => {
             el.classList.add('animated');
@@ -2642,12 +3594,10 @@ function showDetailPageInstantly(detailId) {
     const detail = document.getElementById('detail-' + detailId);
     if (!detail) return;
     
-    // Show all elements instantly
     detail.querySelectorAll('.detail-anim').forEach(el => {
         el.classList.add('animated');
     });
     
-    // Set the typed text content immediately
     const title = detail.querySelector('.detail-title.detail-anim-type');
     const subtitle = detail.querySelector('.detail-subtitle.detail-anim-type-sub');
     
@@ -2665,16 +3615,13 @@ function resetDetailAnimations(detailId) {
     const detail = document.getElementById('detail-' + detailId);
     if (!detail) return;
     
-    // Clear running animations
     clearDetailAnimations();
     
-    // Only reset visuals if not yet animated (so revisits show content)
     if (!animatedDetails.has(detailId)) {
         detail.querySelectorAll('.detail-anim').forEach(el => {
             el.classList.remove('animated');
         });
         
-        // Reset typed text
         const title = detail.querySelector('.detail-title.detail-anim-type');
         const subtitle = detail.querySelector('.detail-subtitle.detail-anim-type-sub');
         if (title) title.textContent = '';
@@ -2685,14 +3632,11 @@ function resetDetailAnimations(detailId) {
 function openDetail(detailId) {
     const detail = document.getElementById('detail-' + detailId);
     if (detail) {
-        // Hide all overlays first (instant, no transition)
         document.querySelectorAll('.detail-overlay').forEach(overlay => {
             if (overlay.id !== 'detail-' + detailId) {
                 overlay.classList.remove('active');
-                // Reset animations on hidden overlays
                 const otherId = overlay.id.replace('detail-', '');
                 resetDetailAnimations(otherId);
-                // Pause video on hidden overlays
                 const video = overlay.querySelector('.detail-video');
                 if (video) {
                     video.pause();
@@ -2700,19 +3644,16 @@ function openDetail(detailId) {
             }
         });
         
-        // Reset and show the target detail with fade transition
         resetDetailAnimations(detailId);
         detail.classList.add('active');
         currentDetail = detailId;
         
-        // Restart video from beginning
         const video = detail.querySelector('.detail-video');
         if (video) {
             video.currentTime = 0;
             video.play();
         }
         
-        // Start animations after overlay is visible
         setTimeout(() => {
             animateDetailPage(detailId);
         }, 100);
@@ -2720,15 +3661,12 @@ function openDetail(detailId) {
 }
 
 function closeDetail() {
-    // Clear any running animations
     clearDetailAnimations();
     
-    // Fade out the current overlay and reset animations
     document.querySelectorAll('.detail-overlay.active').forEach(overlay => {
         overlay.classList.remove('active');
         const detailId = overlay.id.replace('detail-', '');
         resetDetailAnimations(detailId);
-        // Pause video
         const video = overlay.querySelector('.detail-video');
         if (video) {
             video.pause();
@@ -2742,57 +3680,45 @@ function switchDetail(targetId) {
     const newDetail = document.getElementById('detail-' + targetId);
     
     if (newDetail && currentOverlay && currentOverlay.id !== 'detail-' + targetId) {
-        // Clear any running animations first
         clearDetailAnimations();
         
-        // Pause video on old overlay
         const oldVideo = currentOverlay.querySelector('.detail-video');
         if (oldVideo) {
             oldVideo.pause();
         }
         
-        // Reset animations on new detail before showing
         resetDetailAnimations(targetId);
         
-        // Instant switch: no transition, just swap
-        // Temporarily disable transitions
         newDetail.style.transition = 'none';
         newDetail.classList.add('active');
         
-        // Force reflow to apply the instant change
         newDetail.offsetHeight;
         
-        // Remove old overlay and reset its animations
         const oldId = currentOverlay.id.replace('detail-', '');
         currentOverlay.classList.remove('active');
         resetDetailAnimations(oldId);
         
-        // Re-enable transitions for future use
         setTimeout(() => {
             newDetail.style.transition = '';
         }, 50);
         
         currentDetail = targetId;
         
-        // Restart video from beginning on new detail
         const newVideo = newDetail.querySelector('.detail-video');
         if (newVideo) {
             newVideo.currentTime = 0;
             newVideo.play();
         }
         
-        // Start animations on new detail
         setTimeout(() => {
             animateDetailPage(targetId);
         }, 100);
     } else if (newDetail) {
-        // No current overlay, just open new one with fade
         clearDetailAnimations();
         resetDetailAnimations(targetId);
         newDetail.classList.add('active');
         currentDetail = targetId;
         
-        // Restart video from beginning
         const video = newDetail.querySelector('.detail-video');
         if (video) {
             video.currentTime = 0;
@@ -2826,178 +3752,145 @@ document.addEventListener('touchmove', e => {
     if (document.body.classList.contains('scroll-locked')) e.preventDefault();
 }, { passive: false });
 
-
+/* ---------- Team Page Navigation ---------- */
 let currentTeamPage = 0;
-const totalTeamPages = 2;
-function switchTeamPage(direction) {
-    const pages = document.querySelectorAll('.team-page');
-    
-    // Calculate new page index
-    let newPage = currentTeamPage + direction;
-    
-    // Wrap around
-    if (newPage < 0) newPage = totalTeamPages - 1;
-    if (newPage >= totalTeamPages) newPage = 0;
-    
-    // Switch pages
-    pages.forEach((page, index) => {
-        if (index === newPage) {
-            page.classList.add('active');
-        } else {
-            page.classList.remove('active');
-        }
-    });
-    
-    currentTeamPage = newPage;
-}
+const totalTeamPages = 6;
+let currentMemberIndex = 0;
+let allMembers = [];
 
-/* ---------- News Articles Selection ---------- */
-const articles = document.querySelectorAll('.article-item');
-const articlesContainer = document.querySelector('.articles-container');
-let currentArticleIndex = 0; // Start with first article active
-
-function updateVisibleArticles(index) {
-    articles.forEach((article, i) => {
-        article.classList.remove('active', 'prev', 'next');
+function initMobileTeam() {
+    allMembers = document.querySelectorAll('.team-member');
+    
+    if (window.innerWidth <= 768) {
+        // On mobile, show Max Owens (3rd member, index 2) first
+        allMembers.forEach((member, index) => {
+            member.classList.remove('mobile-active');
+            if (index === 2) member.classList.add('mobile-active');
+        });
+        currentMemberIndex = 2;
         
-        if (i === index) {
-            article.classList.add('active');
-        } else if (i === index - 1) {
-            article.classList.add('prev');
-        } else if (i === index + 1) {
-            article.classList.add('next');
-        }
-    });
-    currentArticleIndex = index;
+        // Ensure we're on the correct page (page 0 for Max)
+        const pages = document.querySelectorAll('.team-page');
+        pages.forEach((page, index) => {
+            if (index === 0) {
+                page.classList.add('active');
+            } else {
+                page.classList.remove('active');
+            }
+        });
+    } else {
+        // On desktop/tablet, remove mobile-active class
+        allMembers.forEach(member => {
+            member.classList.remove('mobile-active');
+        });
+    }
 }
 
-// Initialize with first article
-updateVisibleArticles(0);
-
-// Scroll detection for articles container
-let isScrolling = false;
-
-articlesContainer.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (isScrolling) return;
-    
-    if (e.deltaY > 0 && currentArticleIndex < articles.length - 1) {
-        // Scroll down - next article
-        isScrolling = true;
-        updateVisibleArticles(currentArticleIndex + 1);
-        setTimeout(() => { isScrolling = false; }, 400);
-    } else if (e.deltaY < 0 && currentArticleIndex > 0) {
-        // Scroll up - previous article
-        isScrolling = true;
-        updateVisibleArticles(currentArticleIndex - 1);
-        setTimeout(() => { isScrolling = false; }, 400);
-    }
-}, { passive: false });
-
-// Keyboard navigation for articles
-document.addEventListener('keydown', (e) => {
-    const newsSection = document.getElementById('news');
-    const rect = newsSection.getBoundingClientRect();
-    const isFullyInView = rect.top <= 0 && rect.bottom >= window.innerHeight;
-    
-    if (isFullyInView && !currentDetail) {
-        if (e.key === 'ArrowDown' && currentArticleIndex < articles.length - 1) {
-            e.preventDefault();
-            updateVisibleArticles(currentArticleIndex + 1);
-        } else if (e.key === 'ArrowUp' && currentArticleIndex > 0) {
-            e.preventDefault();
-            updateVisibleArticles(currentArticleIndex - 1);
-        }
-    }
-});
-
-// Click to select and open article
-articles.forEach((article, index) => {
-    article.addEventListener('click', (e) => {
-        if (!article.classList.contains('active')) {
-            e.preventDefault();
-            e.stopPropagation();
-            updateVisibleArticles(index);
-        }
-        // If already active, the onclick will open the link
-    });
-});
 function switchTeamPage(direction) {
+    if (window.innerWidth <= 768) {
+        // Mobile: only cycle through first 10 members (pages 0 and 1)
+        const pages = document.querySelectorAll('.team-page');
+        
+        // Remove active from current member in ALL members
+        allMembers.forEach(member => member.classList.remove('mobile-active'));
+        
+        // Calculate new index (only within 0-9 range)
+        currentMemberIndex += direction;
+        if (currentMemberIndex < 0) currentMemberIndex = 9;
+        if (currentMemberIndex > 9) currentMemberIndex = 0;
+        
+        // Add active to new member
+        allMembers[currentMemberIndex].classList.add('mobile-active');
+        
+        // Switch to correct page (0 or 1)
+        const membersPerPage = 5;
+        const targetPage = Math.floor(currentMemberIndex / membersPerPage);
+        
+        pages.forEach((page, index) => {
+            if (index === targetPage) {
+                page.classList.add('active');
+            } else {
+                page.classList.remove('active');
+            }
+        });
+    } else if (window.innerWidth <= 1350) {
+        // Tablet: use pages 2-5
+        const tabletPages = [2, 3, 4, 5];
+        const currentIndex = tabletPages.indexOf(currentTeamPage);
+        let newIndex = currentIndex + direction;
+        
+        if (newIndex < 0) newIndex = tabletPages.length - 1;
+        if (newIndex >= tabletPages.length) newIndex = 0;
+        
+        const newPage = tabletPages[newIndex];
+        const pages = document.querySelectorAll('.team-page');
+        
+        pages.forEach((page, index) => {
+            if (index === newPage) {
+                page.classList.add('active');
+            } else {
+                page.classList.remove('active');
+            }
+        });
+        
+        currentTeamPage = newPage;
+    } else {
+        // Desktop: use pages 0-1
+        const pages = document.querySelectorAll('.team-page');
+        
+        let newPage = currentTeamPage + direction;
+        
+        if (newPage < 0) newPage = 1;
+        if (newPage > 1) newPage = 0;
+        
+        pages.forEach((page, index) => {
+            if (index === newPage) {
+                page.classList.add('active');
+            } else {
+                page.classList.remove('active');
+            }
+        });
+        
+        currentTeamPage = newPage;
+    }
+}
+// Add this new function
+function handleResize() {
+    initMobileTeam();
+    
+    // Reset to appropriate first page based on screen size
     const pages = document.querySelectorAll('.team-page');
     
-    // Calculate new page index
-    let newPage = currentTeamPage + direction;
-    
-    // Wrap around
-    if (newPage < 0) newPage = totalTeamPages - 1;
-    if (newPage >= totalTeamPages) newPage = 0;
-    
-    // Switch pages
-    pages.forEach((page, index) => {
-        if (index === newPage) {
-            page.classList.add('active');
-        } else {
-            page.classList.remove('active');
-        }
-    });
-    
-    currentTeamPage = newPage;
+    if (window.innerWidth <= 768) {
+        // Mobile - keep current member active
+        return;
+    } else if (window.innerWidth <= 1350) {
+        // Tablet - reset to first tablet page (page 2)
+        currentTeamPage = 2;
+        pages.forEach((page, index) => {
+            if (index === 2) {
+                page.classList.add('active');
+            } else {
+                page.classList.remove('active');
+            }
+        });
+    } else {
+        // Desktop - reset to first desktop page (page 0)
+        currentTeamPage = 0;
+        pages.forEach((page, index) => {
+            if (index === 0) {
+                page.classList.add('active');
+            } else {
+                page.classList.remove('active');
+            }
+        });
+    }
 }
-/* ---------- News Page Animations ---------- */
-/* Replace your existing animateNews() function with this one */
 
-function animateNews() {
-    if (animatedSections.has('news')) return;
-    animatedSections.add('news');
-    
-    // Type in title
-    const title = document.querySelector('#news .news-title.type-animation');
-    if (title) typeText(title, 30);
-    
-    // Fade in eagle
-    const eagle = document.querySelector('#news .eagle-black.fade-in');
-    setTimeout(() => {
-        if (eagle) eagle.classList.add('animated');
-    }, 200);
-    
-    // Animate the line
-    const line = document.querySelector('#news .news-line');
-    setTimeout(() => {
-        if (line) line.classList.add('animated');
-    }, 300);
-    
-    // Fade in the scroll container
-    const scrollContainer = document.querySelector('#news .cards-scroll-container');
-    setTimeout(() => {
-        if (scrollContainer) scrollContainer.classList.add('animated');
-    }, 500);
-    
-    // Animate individual cards with stagger
-    const cards = document.querySelectorAll('#news .article-card');
-    cards.forEach((card, index) => {
-        setTimeout(() => {
-            card.classList.add('animated');
-        }, 600 + (index * 100));
-    });
-    
-    // Show scroll track
-    const scrollTrackContainer = document.querySelector('#news .scroll-track-container');
-    setTimeout(() => {
-        if (scrollTrackContainer) scrollTrackContainer.classList.add('visible');
-    }, 900);
-    
-    // Fade in button
-    const btn = document.querySelector('#news .our-articles-btn');
-    setTimeout(() => {
-        if (btn) btn.classList.add('animated');
-    }, 1100);
-}
+window.addEventListener('resize', handleResize);
+document.addEventListener('DOMContentLoaded', handleResize);
 
 /* ---------- Custom Scroll Track ---------- */
-/* Add this code to your existing script */
-
 function initCustomScrollTrack() {
     const scrollContainer = document.querySelector('#news .cards-scroll-container');
     const scrollTrack = document.querySelector('#news .scroll-track');
@@ -3009,21 +3902,18 @@ function initCustomScrollTrack() {
     let startX = 0;
     let startScrollLeft = 0;
     
-    // Calculate thumb width based on visible ratio
     function updateThumbSize() {
         const visibleRatio = scrollContainer.clientWidth / scrollContainer.scrollWidth;
         const thumbWidth = Math.max(visibleRatio * scrollTrack.clientWidth, 60);
         scrollThumb.style.width = `${thumbWidth}px`;
     }
     
-    // Update thumb position based on scroll
     function updateThumbPosition() {
         const scrollRatio = scrollContainer.scrollLeft / (scrollContainer.scrollWidth - scrollContainer.clientWidth);
         const maxThumbLeft = scrollTrack.clientWidth - scrollThumb.clientWidth;
         scrollThumb.style.left = `${scrollRatio * maxThumbLeft}px`;
     }
     
-    // Scroll the container when thumb is dragged
     function onThumbDrag(e) {
         if (!isDragging) return;
         e.preventDefault();
@@ -3037,7 +3927,6 @@ function initCustomScrollTrack() {
         scrollContainer.scrollLeft = Math.max(0, Math.min(scrollWidth, newScrollLeft));
     }
     
-    // Start dragging
     function startDrag(e) {
         isDragging = true;
         startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
@@ -3046,14 +3935,12 @@ function initCustomScrollTrack() {
         document.body.style.userSelect = 'none';
     }
     
-    // Stop dragging
     function stopDrag() {
         isDragging = false;
         scrollThumb.style.cursor = 'grab';
         document.body.style.userSelect = '';
     }
     
-    // Click on track to jump
     function onTrackClick(e) {
         if (e.target === scrollThumb) return;
         
@@ -3062,20 +3949,17 @@ function initCustomScrollTrack() {
         const trackWidth = scrollTrack.clientWidth;
         const scrollWidth = scrollContainer.scrollWidth - scrollContainer.clientWidth;
         
-        // Center the thumb on click position
         const thumbHalfWidth = scrollThumb.clientWidth / 2;
         const targetRatio = (clickX - thumbHalfWidth) / (trackWidth - scrollThumb.clientWidth);
         scrollContainer.scrollLeft = targetRatio * scrollWidth;
     }
     
-    // Event listeners
     scrollContainer.addEventListener('scroll', updateThumbPosition);
     window.addEventListener('resize', () => {
         updateThumbSize();
         updateThumbPosition();
     });
     
-    // Thumb drag events
     scrollThumb.addEventListener('mousedown', startDrag);
     scrollThumb.addEventListener('touchstart', startDrag, { passive: true });
     
@@ -3085,16 +3969,14 @@ function initCustomScrollTrack() {
     document.addEventListener('mouseup', stopDrag);
     document.addEventListener('touchend', stopDrag);
     
-    // Track click
     scrollTrack.addEventListener('click', onTrackClick);
     
-    // Initialize
     updateThumbSize();
     updateThumbPosition();
 }
 
-// Call this after DOM is loaded
 document.addEventListener('DOMContentLoaded', initCustomScrollTrack);
+
 /* ---------- Article Card Click Handler ---------- */
 document.querySelectorAll('#news .article-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -3102,6 +3984,65 @@ document.querySelectorAll('#news .article-card').forEach(card => {
         if (url) window.open(url, '_blank');
     });
 });
+
+/* ---------- Detail Features Scroll Indicator ---------- */
+document.querySelectorAll('.detail-features').forEach(features => {
+    features.addEventListener('scroll', function() {
+        if (this.scrollTop > 10) {
+            this.classList.add('scrolled');
+        } else {
+            this.classList.remove('scrolled');
+        }
+    });
+});
+
+/* Force video autoplay on iOS */
+document.addEventListener('DOMContentLoaded', function() {
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => {
+        video.play().catch(function(error) {
+            console.log("Video autoplay failed:", error);
+        });
+    });
+});
+
+/* ---------- Show scroll arrow only when overflow exists ---------- */
+function checkOverflow() {
+    document.querySelectorAll('.detail-features').forEach(features => {
+        if (features.scrollHeight > features.clientHeight) {
+            features.classList.add('has-overflow');
+        } else {
+            features.classList.remove('has-overflow');
+        }
+    });
+}
+
+window.addEventListener('resize', checkOverflow);
+setInterval(checkOverflow, 500); // Check every 500ms
+/* ---------- Wireframe Switching on Feature Click ---------- */
+function switchWireframe(featureEl) {
+    const wireframeSrc = featureEl.dataset.wireframe;
+    if (!wireframeSrc) return;
+    
+    const overlay = featureEl.closest('.detail-overlay');
+    if (!overlay) return;
+    
+    const wireframeImg = overlay.querySelector('.detail-wireframe img');
+    if (!wireframeImg) return;
+    
+    // Remove active from siblings, add to clicked
+    overlay.querySelectorAll('.detail-feature[data-wireframe]').forEach(f => {
+        f.classList.remove('active');
+    });
+    featureEl.classList.add('active');
+    
+    // Fade out, swap, fade in
+    wireframeImg.style.opacity = '0';
+    setTimeout(() => {
+        wireframeImg.src = wireframeSrc;
+        wireframeImg.style.opacity = '1';
+    }, 300);
+}
 </script>
 
 </body>

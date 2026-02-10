@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Track/Undercarriage -->
+  <ellipse cx="350" cy="400" rx="250" ry="60" opacity="0.3"/>
+  <ellipse cx="350" cy="400" rx="230" ry="48" opacity="0.2"/>
+  
+  <!-- Track wheels -->
+  <circle cx="150" cy="400" r="45" opacity="0.4"/>
+  <circle cx="150" cy="400" r="30" opacity="0.2"/>
+  <circle cx="550" cy="400" r="45" opacity="0.4"/>
+  <circle cx="550" cy="400" r="30" opacity="0.2"/>
+  
+  <!-- Small track rollers -->
+  <circle cx="250" cy="430" r="18" opacity="0.3"/>
+  <circle cx="350" cy="435" r="18" opacity="0.3"/>
+  <circle cx="450" cy="430" r="18" opacity="0.3"/>
+  
+  <!-- Track top rollers -->
+  <circle cx="280" cy="365" r="12" opacity="0.2"/>
+  <circle cx="400" cy="362" r="12" opacity="0.2"/>
+  
+  <!-- Track outline -->
+  <path d="M150 355 L550 355" opacity="0.3"/>
+  <path d="M150 445 L550 445" opacity="0.3"/>
+  
+  <!-- Main body -->
+  <path d="M180 350 L180 220 L520 200 L520 350" opacity="0.5"/>
+  <path d="M200 340 L200 235 L500 218 L500 340" opacity="0.3"/>
+  
+  <!-- Engine compartment -->
+  <path d="M320 200 L320 140 L510 125 L510 200" opacity="0.5"/>
+  <path d="M340 195 L340 155 L490 142 L490 195" opacity="0.3"/>
+  
+  <!-- Engine grille lines -->
+  <line x1="355" y1="155" x2="355" y2="190" opacity="0.2"/>
+  <line x1="380" y1="152" x2="380" y2="190" opacity="0.2"/>
+  <line x1="405" y1="150" x2="405" y2="188" opacity="0.2"/>
+  <line x1="430" y1="148" x2="430" y2="186" opacity="0.2"/>
+  <line x1="455" y1="145" x2="455" y2="184" opacity="0.2"/>
+  
+  <!-- Exhaust stack -->
+  <path d="M480 125 L480 80 L490 80 L490 125" opacity="0.4"/>
+  <ellipse cx="485" cy="78" rx="8" ry="3" opacity="0.3"/>
+  
+  <!-- Cab -->
+  <path d="M190 220 L190 120 L310 110 L310 200" opacity="0.6"/>
+  <path d="M195 215 L195 128 L305 118 L305 198" opacity="0.3"/>
+  
+  <!-- Cab window -->
+  <path d="M200 195 L200 140 L295 132 L295 190" opacity="0.4"/>
+  <path d="M205 190 L205 148 L290 140 L290 186" opacity="0.2"/>
+  
+  <!-- Cab roof -->
+  <path d="M185 120 L185 108 L315 98 L315 110" opacity="0.5"/>
+  
+  <!-- ROPS frame -->
+  <line x1="190" y1="120" x2="190" y2="105" opacity="0.4"/>
+  <line x1="310" y1="110" x2="310" y2="95" opacity="0.4"/>
+  <path d="M190 105 L310 95" opacity="0.4"/>
+  
+  <!-- Blade arm - hydraulic -->
+  <path d="M140 280 L60 300 L50 250 L140 230" opacity="0.5"/>
+  <path d="M100 240 L80 180" opacity="0.4" stroke-width="2"/>
+  <path d="M160 220 L80 175" opacity="0.3" stroke-width="1.5"/>
+  
+  <!-- Blade -->
+  <path d="M30 180 L30 320 L60 330 L60 170 Z" opacity="0.5"/>
+  <path d="M35 190 L35 310 L55 318 L55 182" opacity="0.3"/>
+  <path d="M60 180 L80 175" opacity="0.4"/>
+  <path d="M60 320 L80 310" opacity="0.4"/>
+  
+  <!-- Blade cutting edge -->
+  <path d="M25 180 L25 320 L30 325 L30 175 Z" opacity="0.6"/>
+  
+  <!-- Ripper at rear -->
+  <path d="M560 350 L600 350 L620 280 L590 280 Z" opacity="0.4"/>
+  <path d="M610 280 L630 380 L640 375 L625 275" opacity="0.4"/>
+  <path d="M635 375 L650 400" opacity="0.5" stroke-width="2"/>
+  
+  <!-- Hydraulic cylinder detail -->
+  <line x1="570" y1="300" x2="620" y2="260" opacity="0.3"/>
+  <rect x="565" y="295" width="12" height="12" rx="2" opacity="0.2"/>
+  
+  <!-- Ground reference line -->
+  <line x1="20" y1="460" x2="680" y2="460" opacity="0.1" stroke-dasharray="8 8"/>
+  
+  <!-- Dimension lines -->
+  <line x1="25" y1="475" x2="650" y2="475" opacity="0.15"/>
+  <line x1="25" y1="470" x2="25" y2="480" opacity="0.15"/>
+  <line x1="650" y1="470" x2="650" y2="480" opacity="0.15"/>
+  
+  <!-- Additional detail lines on body -->
+  <line x1="200" y1="280" x2="500" y2="270" opacity="0.15"/>
+  <line x1="200" y1="310" x2="500" y2="300" opacity="0.15"/>
+  
+  <!-- Tow hook area -->
+  <circle cx="540" cy="320" r="8" opacity="0.2"/>
+  <circle cx="540" cy="320" r="4" opacity="0.3"/>
+</svg>
