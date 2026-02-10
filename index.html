@@ -634,6 +634,11 @@ body.scroll-locked {
     /* ===== LANDING PAGE ===== */
     html {
         scroll-snap-type: none !important;
+        overflow-x: hidden !important;
+    }
+
+    body {
+        overflow-x: hidden !important;
     }
 
 
@@ -1083,19 +1088,18 @@ body.scroll-locked {
     }
 
     .team-members {
-        width: 100vw;
+        width: calc(100% + 48px);
         margin-left: -24px;
         padding: 0;
         overflow: hidden;
         position: relative;
-        justify-content: flex-start !important;
-        align-items: stretch !important;
+        display: block !important;
     }
 
     .team-carousel {
         width: 100%;
         overflow: hidden;
-        justify-content: flex-start !important;
+        display: block !important;
     }
 
     .team-page {
@@ -1108,22 +1112,23 @@ body.scroll-locked {
         align-items: center !important;
         gap: 0 !important;
         transition: transform 0.4s ease;
-        width: max-content;
     }
 
     .team-page:not(.active) {
         display: none !important;
     }
 
+    /* Each member takes full container width (100% of .team-members) */
     .team-member {
-        width: 100vw !important;
-        flex-shrink: 0;
-        padding: 0 24px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        width: calc(100vw - 0px) !important;
+        min-width: calc(100vw - 0px) !important;
+        flex-shrink: 0 !important;
+        padding: 0 48px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .member-image-container {
@@ -3849,34 +3854,44 @@ let mobileMembers = [];
 let mobileMemberCount = 0;
 let mobileTeamInitialized = false;
 
+function getMobileSlideWidth() {
+    /* Use the .team-members container width as the slide unit */
+    var container = document.querySelector('.team-members');
+    if (container) return container.offsetWidth;
+    return window.innerWidth;
+}
+
+function applyMobileTransform() {
+    var page0 = document.querySelector('.team-page[data-page="0"]');
+    if (!page0) return;
+    var slideWidth = getMobileSlideWidth();
+    page0.style.transform = 'translateX(' + -(currentMemberIndex * slideWidth) + 'px)';
+}
+
 function initMobileTeam() {
     allMembers = document.querySelectorAll('.team-member');
     
-    /* Grab only the members inside data-page="0" for mobile carousel */
     var page0 = document.querySelector('.team-page[data-page="0"]');
     mobileMembers = page0 ? page0.querySelectorAll('.team-member') : [];
     mobileMemberCount = mobileMembers.length;
     
     if (window.innerWidth <= 768) {
-        /* Only reset to index 0 on first init, not on every resize */
         if (!mobileTeamInitialized) {
             currentMemberIndex = 0;
             mobileTeamInitialized = true;
         }
         
-        /* Force page 0 active, set transform to show current member */
         var pages = document.querySelectorAll('.team-page');
         for (var i = 0; i < pages.length; i++) {
             if (i === 0) {
                 pages[i].classList.add('active');
-                pages[i].style.transform = 'translateX(' + -(currentMemberIndex * 100) + 'vw)';
             } else {
                 pages[i].classList.remove('active');
             }
         }
+        applyMobileTransform();
     } else {
         mobileTeamInitialized = false;
-        /* On desktop/tablet, clear all mobile transforms */
         var allPages = document.querySelectorAll('.team-page');
         for (var j = 0; j < allPages.length; j++) {
             allPages[j].style.transform = '';
@@ -3886,22 +3901,15 @@ function initMobileTeam() {
 
 function switchTeamPage(direction) {
     if (window.innerWidth <= 768) {
-        /* Mobile: cycle through members on page 0 one at a time */
         if (mobileMemberCount === 0) return;
         
         currentMemberIndex += direction;
         
-        /* Wrap around: after Max (4) go to Paul (0), before Paul (0) go to Max (4) */
         if (currentMemberIndex < 0) currentMemberIndex = mobileMemberCount - 1;
         if (currentMemberIndex >= mobileMemberCount) currentMemberIndex = 0;
         
-        /* Slide the page strip */
-        var page0 = document.querySelector('.team-page[data-page="0"]');
-        if (page0) {
-            page0.style.transform = 'translateX(' + -(currentMemberIndex * 100) + 'vw)';
-        }
+        applyMobileTransform();
     } else if (window.innerWidth <= 1350) {
-        /* Tablet: use pages 2-5 */
         var tabletPages = [2, 3, 4, 5];
         var currentIndex = tabletPages.indexOf(currentTeamPage);
         var newIndex = currentIndex + direction;
@@ -3922,7 +3930,6 @@ function switchTeamPage(direction) {
         
         currentTeamPage = newPage;
     } else {
-        /* Desktop: use pages 0-1 */
         var pages = document.querySelectorAll('.team-page');
         var np = currentTeamPage + direction;
         
@@ -3947,7 +3954,6 @@ function handleResize() {
     var pages = document.querySelectorAll('.team-page');
     
     if (window.innerWidth <= 768) {
-        /* Mobile is handled by initMobileTeam */
         return;
     } else if (window.innerWidth <= 1350) {
         currentTeamPage = 2;
