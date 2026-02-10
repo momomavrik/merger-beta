@@ -1067,16 +1067,17 @@ body.scroll-locked {
     /* ===== TEAM PAGE - MOBILE CAROUSEL ===== */
 
     #team {
-        padding: 40px 24px 24px;
+        padding: 40px 0 24px;
     }
 
     .team-header {
         margin-bottom: 24px;
+        padding: 0 24px;
     }
 
     .team-content {
         gap: 24px;
-        padding-top: 8px;
+        padding: 8px 24px 0;
     }
 
     .team-description {
@@ -1088,8 +1089,7 @@ body.scroll-locked {
     }
 
     .team-members {
-        width: calc(100% + 48px);
-        margin-left: -24px;
+        width: 100%;
         padding: 0;
         overflow: hidden;
         position: relative;
@@ -1118,12 +1118,11 @@ body.scroll-locked {
         display: none !important;
     }
 
-    /* Each member takes full container width (100% of .team-members) */
     .team-member {
-        width: calc(100vw - 0px) !important;
-        min-width: calc(100vw - 0px) !important;
+        width: 100vw !important;
+        min-width: 100vw !important;
         flex-shrink: 0 !important;
-        padding: 0 48px !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
         display: flex !important;
         flex-direction: column !important;
@@ -1139,8 +1138,8 @@ body.scroll-locked {
     .team-nav {
         display: block !important;
         position: absolute;
-        bottom: 50%;
-        transform: translateY(50%);
+        top: 50%;
+        transform: translateY(-50%);
         z-index: 10;
         color: #fff;
         font-size: 24px;
@@ -1150,11 +1149,11 @@ body.scroll-locked {
     }
 
     .team-nav-left {
-        left: 0;
+        left: 8px;
     }
 
     .team-nav-right {
-        right: 0;
+        right: 8px;
     }
 
     /* ===== NEWS PAGE ===== */
@@ -3854,18 +3853,12 @@ let mobileMembers = [];
 let mobileMemberCount = 0;
 let mobileTeamInitialized = false;
 
-function getMobileSlideWidth() {
-    /* Use the .team-members container width as the slide unit */
-    var container = document.querySelector('.team-members');
-    if (container) return container.offsetWidth;
-    return window.innerWidth;
-}
-
 function applyMobileTransform() {
     var page0 = document.querySelector('.team-page[data-page="0"]');
     if (!page0) return;
-    var slideWidth = getMobileSlideWidth();
-    page0.style.transform = 'translateX(' + -(currentMemberIndex * slideWidth) + 'px)';
+    /* Use window.innerWidth as each member is 100vw wide */
+    var offset = currentMemberIndex * window.innerWidth;
+    page0.style.transform = 'translateX(-' + offset + 'px)';
 }
 
 function initMobileTeam() {
