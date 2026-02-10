@@ -731,8 +731,8 @@ body.scroll-locked {
     }
     
     .second-title::before {
-        min-height: 60px;
-        height: 60px;
+        min-height: 70px;
+        height: 70px;
         width: 2px;
         flex-shrink: 0;
     }
@@ -754,7 +754,7 @@ body.scroll-locked {
     .second-title-text .mission {
         font-size: 12px;
         max-width: 100%;
-        min-height: auto;
+        min-height: calc(12px * 1.3 * 3);
         line-height: 1.3;
         display: -webkit-box;
         -webkit-line-clamp: 3;
@@ -1012,7 +1012,8 @@ body.scroll-locked {
     #detail-teaming .detail-features::after {
         display: none;
     }
-    /* ---------- TEAM - ALWAYS VISIBLE ---------- */
+
+    /* ---------- TEAM - MOBILE ONE-BY-ONE SCROLL ---------- */
     .member-image-container {
         width: 200px;
         height: 220px;
@@ -1031,6 +1032,7 @@ body.scroll-locked {
         font-weight: 500;
         letter-spacing: 0.12em;
         white-space: nowrap;
+        opacity: 1;
     }
 
     .member-subtitle {
@@ -1056,6 +1058,89 @@ body.scroll-locked {
         color: #fff;
         gap: 8px;
     }
+
+    /* ===== TEAM PAGE - MOBILE CAROUSEL ===== */
+
+    #team {
+        padding: 40px 24px 24px;
+    }
+
+    .team-header {
+        margin-bottom: 24px;
+    }
+
+    .team-content {
+        gap: 24px;
+        padding-top: 8px;
+    }
+
+    .team-description {
+        font-size: 16px;
+    }
+
+    .team-cta-text {
+        font-size: 16px;
+    }
+
+    .team-members {
+        width: 100%;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .team-carousel {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .team-page {
+        position: relative !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+        display: flex !important;
+        gap: 0;
+        transition: transform 0.4s ease;
+        width: max-content;
+    }
+
+    .team-page:not(.active) {
+        display: none !important;
+    }
+
+    .team-member {
+        width: 100vw;
+        flex-shrink: 0;
+        padding: 0 24px;
+        box-sizing: border-box;
+    }
+
+    .member-image-container {
+        width: 180px;
+        height: 200px;
+    }
+
+    .team-nav {
+        display: block !important;
+        position: absolute;
+        bottom: 50%;
+        transform: translateY(50%);
+        z-index: 10;
+        color: #fff;
+        font-size: 24px;
+        opacity: 0.6;
+        cursor: pointer;
+        padding: 12px;
+    }
+
+    .team-nav-left {
+        left: 0;
+    }
+
+    .team-nav-right {
+        right: 0;
+    }
+
     /* ===== NEWS PAGE ===== */
     
     #news {
@@ -1483,15 +1568,7 @@ body.scroll-locked {
 }
 
 .team-nav {
-    position: absolute;
-    bottom: 12px;
-    font-size: 18px;
-    opacity: 0.5;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
-    font-style: normal;
+    display: none;
 }
 
 .team-nav:hover {
@@ -2574,7 +2651,6 @@ body.scroll-locked {
     opacity: 1;
     color: #fff;
 }
-
 </style>
 </head>
 
@@ -3025,13 +3101,23 @@ body.scroll-locked {
                 </div>
             </div>
         </div>
+        <div class="team-nav team-nav-left" onclick="switchTeamPage(-1)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 7H3M3 7L7 3M3 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="team-nav team-nav-right" onclick="switchTeamPage(1)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
     </div>
 
 </section>
 
 <!-- ========== NEWS & ARTICLES PAGE ========== -->
 <section id="news">
-    <img src="logo-eagle-black.png" class="eagle eagle-black fade-in" alt="Eagle Logo">
+    <img src="HAVOC-BLACK.png" class="eagle eagle-black fade-in" alt="Eagle Logo">
     
     <div class="news-header">
         <h2 class="news-title type-animation" data-text="NEWS & ARTICLES"></h2>
@@ -3762,57 +3848,50 @@ function initMobileTeam() {
     allMembers = document.querySelectorAll('.team-member');
     
     if (window.innerWidth <= 768) {
-        // On mobile, show Max Owens (3rd member, index 2) first
+        // On mobile, show Paul Lwin (1st member, index 0) first
         allMembers.forEach((member, index) => {
             member.classList.remove('mobile-active');
-            if (index === 2) member.classList.add('mobile-active');
+            if (index === 0) member.classList.add('mobile-active');
         });
-        currentMemberIndex = 2;
+        currentMemberIndex = 0;
         
-        // Ensure we're on the correct page (page 0 for Max)
+        // Ensure we're on page 0 and positioned at first member
         const pages = document.querySelectorAll('.team-page');
         pages.forEach((page, index) => {
             if (index === 0) {
                 page.classList.add('active');
+                page.style.transform = 'translateX(0vw)';
             } else {
                 page.classList.remove('active');
             }
         });
     } else {
-        // On desktop/tablet, remove mobile-active class
+        // On desktop/tablet, remove mobile-active class and reset transforms
         allMembers.forEach(member => {
             member.classList.remove('mobile-active');
+        });
+        document.querySelectorAll('.team-page').forEach(page => {
+            page.style.transform = '';
         });
     }
 }
 
 function switchTeamPage(direction) {
     if (window.innerWidth <= 768) {
-        // Mobile: only cycle through first 10 members (pages 0 and 1)
-        const pages = document.querySelectorAll('.team-page');
+        // Mobile: scroll through all members one by one using translateX
+        const totalMembers = allMembers.length;
         
-        // Remove active from current member in ALL members
-        allMembers.forEach(member => member.classList.remove('mobile-active'));
-        
-        // Calculate new index (only within 0-9 range)
+        // Calculate new index (wrap around all members)
         currentMemberIndex += direction;
-        if (currentMemberIndex < 0) currentMemberIndex = 9;
-        if (currentMemberIndex > 9) currentMemberIndex = 0;
+        if (currentMemberIndex < 0) currentMemberIndex = totalMembers - 1;
+        if (currentMemberIndex >= totalMembers) currentMemberIndex = 0;
         
-        // Add active to new member
-        allMembers[currentMemberIndex].classList.add('mobile-active');
-        
-        // Switch to correct page (0 or 1)
-        const membersPerPage = 5;
-        const targetPage = Math.floor(currentMemberIndex / membersPerPage);
-        
-        pages.forEach((page, index) => {
-            if (index === targetPage) {
-                page.classList.add('active');
-            } else {
-                page.classList.remove('active');
-            }
-        });
+        // Slide the active page using transform
+        const activePage = document.querySelector('.team-page.active');
+        if (activePage) {
+            const offset = -(currentMemberIndex * 100);
+            activePage.style.transform = 'translateX(' + offset + 'vw)';
+        }
     } else if (window.innerWidth <= 1350) {
         // Tablet: use pages 2-5
         const tabletPages = [2, 3, 4, 5];
@@ -3854,7 +3933,7 @@ function switchTeamPage(direction) {
         currentTeamPage = newPage;
     }
 }
-// Add this new function
+
 function handleResize() {
     initMobileTeam();
     
@@ -3862,12 +3941,22 @@ function handleResize() {
     const pages = document.querySelectorAll('.team-page');
     
     if (window.innerWidth <= 768) {
-        // Mobile - keep current member active
+        // Mobile - ensure page 0 is active and positioned at current member
+        pages.forEach((page, index) => {
+            if (index === 0) {
+                page.classList.add('active');
+                const offset = -(currentMemberIndex * 100);
+                page.style.transform = 'translateX(' + offset + 'vw)';
+            } else {
+                page.classList.remove('active');
+            }
+        });
         return;
     } else if (window.innerWidth <= 1350) {
         // Tablet - reset to first tablet page (page 2)
         currentTeamPage = 2;
         pages.forEach((page, index) => {
+            page.style.transform = '';
             if (index === 2) {
                 page.classList.add('active');
             } else {
@@ -3878,6 +3967,7 @@ function handleResize() {
         // Desktop - reset to first desktop page (page 0)
         currentTeamPage = 0;
         pages.forEach((page, index) => {
+            page.style.transform = '';
             if (index === 0) {
                 page.classList.add('active');
             } else {
