@@ -1087,11 +1087,14 @@ body.scroll-locked {
         padding: 0;
         overflow: hidden;
         position: relative;
+        justify-content: flex-start !important;
+        align-items: stretch !important;
     }
 
     .team-carousel {
         width: 100%;
         overflow: hidden;
+        justify-content: flex-start !important;
     }
 
     .team-page {
@@ -1099,7 +1102,10 @@ body.scroll-locked {
         opacity: 1 !important;
         pointer-events: all !important;
         display: flex !important;
-        gap: 0;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 0 !important;
         transition: transform 0.4s ease;
         width: max-content;
     }
@@ -1109,10 +1115,14 @@ body.scroll-locked {
     }
 
     .team-member {
-        width: 100vw;
+        width: 100vw !important;
         flex-shrink: 0;
         padding: 0 24px;
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .member-image-container {
@@ -1568,7 +1578,15 @@ body.scroll-locked {
 }
 
 .team-nav {
-    display: none;
+    position: absolute;
+    bottom: 12px;
+    font-size: 18px;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
+    font-style: normal;
 }
 
 .team-nav:hover {
@@ -3826,137 +3844,130 @@ let currentTeamPage = 0;
 const totalTeamPages = 6;
 let currentMemberIndex = 0;
 let allMembers = [];
-
-/* Mobile-only: members from page 0 only */
 let mobileMembers = [];
 let mobileMemberCount = 0;
+let mobileTeamInitialized = false;
 
 function initMobileTeam() {
     allMembers = document.querySelectorAll('.team-member');
     
     /* Grab only the members inside data-page="0" for mobile carousel */
-    const page0 = document.querySelector('.team-page[data-page="0"]');
+    var page0 = document.querySelector('.team-page[data-page="0"]');
     mobileMembers = page0 ? page0.querySelectorAll('.team-member') : [];
-    mobileMemberCount = mobileMembers.length; // should be 5
+    mobileMemberCount = mobileMembers.length;
     
     if (window.innerWidth <= 768) {
-        // Start with Paul Lwin (index 0)
-        currentMemberIndex = 0;
+        /* Only reset to index 0 on first init, not on every resize */
+        if (!mobileTeamInitialized) {
+            currentMemberIndex = 0;
+            mobileTeamInitialized = true;
+        }
         
-        // Ensure page 0 is active and at position 0
-        const pages = document.querySelectorAll('.team-page');
-        pages.forEach((page, index) => {
-            if (index === 0) {
-                page.classList.add('active');
-                page.style.transform = 'translateX(0vw)';
+        /* Force page 0 active, set transform to show current member */
+        var pages = document.querySelectorAll('.team-page');
+        for (var i = 0; i < pages.length; i++) {
+            if (i === 0) {
+                pages[i].classList.add('active');
+                pages[i].style.transform = 'translateX(' + -(currentMemberIndex * 100) + 'vw)';
             } else {
-                page.classList.remove('active');
+                pages[i].classList.remove('active');
             }
-        });
+        }
     } else {
-        // On desktop/tablet, reset transforms
-        document.querySelectorAll('.team-page').forEach(page => {
-            page.style.transform = '';
-        });
+        mobileTeamInitialized = false;
+        /* On desktop/tablet, clear all mobile transforms */
+        var allPages = document.querySelectorAll('.team-page');
+        for (var j = 0; j < allPages.length; j++) {
+            allPages[j].style.transform = '';
+        }
     }
 }
 
 function switchTeamPage(direction) {
     if (window.innerWidth <= 768) {
-        // Mobile: cycle through the 5 members on page 0, one at a time
+        /* Mobile: cycle through members on page 0 one at a time */
         if (mobileMemberCount === 0) return;
         
         currentMemberIndex += direction;
         
-        // Wrap around
+        /* Wrap around: after Max (4) go to Paul (0), before Paul (0) go to Max (4) */
         if (currentMemberIndex < 0) currentMemberIndex = mobileMemberCount - 1;
         if (currentMemberIndex >= mobileMemberCount) currentMemberIndex = 0;
         
-        // Slide page 0 using transform
-        const page0 = document.querySelector('.team-page[data-page="0"]');
+        /* Slide the page strip */
+        var page0 = document.querySelector('.team-page[data-page="0"]');
         if (page0) {
             page0.style.transform = 'translateX(' + -(currentMemberIndex * 100) + 'vw)';
         }
     } else if (window.innerWidth <= 1350) {
-        // Tablet: use pages 2-5
-        const tabletPages = [2, 3, 4, 5];
-        const currentIndex = tabletPages.indexOf(currentTeamPage);
-        let newIndex = currentIndex + direction;
+        /* Tablet: use pages 2-5 */
+        var tabletPages = [2, 3, 4, 5];
+        var currentIndex = tabletPages.indexOf(currentTeamPage);
+        var newIndex = currentIndex + direction;
         
         if (newIndex < 0) newIndex = tabletPages.length - 1;
         if (newIndex >= tabletPages.length) newIndex = 0;
         
-        const newPage = tabletPages[newIndex];
-        const pages = document.querySelectorAll('.team-page');
+        var newPage = tabletPages[newIndex];
+        var pages = document.querySelectorAll('.team-page');
         
-        pages.forEach((page, index) => {
-            if (index === newPage) {
-                page.classList.add('active');
+        for (var i = 0; i < pages.length; i++) {
+            if (i === newPage) {
+                pages[i].classList.add('active');
             } else {
-                page.classList.remove('active');
+                pages[i].classList.remove('active');
             }
-        });
+        }
         
         currentTeamPage = newPage;
     } else {
-        // Desktop: use pages 0-1
-        const pages = document.querySelectorAll('.team-page');
+        /* Desktop: use pages 0-1 */
+        var pages = document.querySelectorAll('.team-page');
+        var np = currentTeamPage + direction;
         
-        let newPage = currentTeamPage + direction;
+        if (np < 0) np = 1;
+        if (np > 1) np = 0;
         
-        if (newPage < 0) newPage = 1;
-        if (newPage > 1) newPage = 0;
-        
-        pages.forEach((page, index) => {
-            if (index === newPage) {
-                page.classList.add('active');
+        for (var i = 0; i < pages.length; i++) {
+            if (i === np) {
+                pages[i].classList.add('active');
             } else {
-                page.classList.remove('active');
+                pages[i].classList.remove('active');
             }
-        });
+        }
         
-        currentTeamPage = newPage;
+        currentTeamPage = np;
     }
 }
 
 function handleResize() {
     initMobileTeam();
     
-    const pages = document.querySelectorAll('.team-page');
+    var pages = document.querySelectorAll('.team-page');
     
     if (window.innerWidth <= 768) {
-        // Mobile — ensure page 0 is active, positioned at current member
-        pages.forEach((page, index) => {
-            if (index === 0) {
-                page.classList.add('active');
-                page.style.transform = 'translateX(' + -(currentMemberIndex * 100) + 'vw)';
-            } else {
-                page.classList.remove('active');
-            }
-        });
+        /* Mobile is handled by initMobileTeam */
         return;
     } else if (window.innerWidth <= 1350) {
-        // Tablet - reset to first tablet page (page 2)
         currentTeamPage = 2;
-        pages.forEach((page, index) => {
-            page.style.transform = '';
-            if (index === 2) {
-                page.classList.add('active');
+        for (var i = 0; i < pages.length; i++) {
+            pages[i].style.transform = '';
+            if (i === 2) {
+                pages[i].classList.add('active');
             } else {
-                page.classList.remove('active');
+                pages[i].classList.remove('active');
             }
-        });
+        }
     } else {
-        // Desktop - reset to first desktop page (page 0)
         currentTeamPage = 0;
-        pages.forEach((page, index) => {
-            page.style.transform = '';
-            if (index === 0) {
-                page.classList.add('active');
+        for (var i = 0; i < pages.length; i++) {
+            pages[i].style.transform = '';
+            if (i === 0) {
+                pages[i].classList.add('active');
             } else {
-                page.classList.remove('active');
+                pages[i].classList.remove('active');
             }
-        });
+        }
     }
 }
 
